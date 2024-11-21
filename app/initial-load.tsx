@@ -32,7 +32,6 @@ const styles = StyleSheet.create({
 });
 
 
-// Let me break down the navigation flow I've designed:
 
 // 1. Root Navigation (`app/_layout.tsx`):
 //    - Defines the main stack of screens

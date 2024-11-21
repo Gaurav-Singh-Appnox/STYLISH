@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function RootLayout() {
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      {/* Initial stack screens */}
+      <Stack.Screen name="first-splash" />
       <Stack.Screen name="onboarding/index" options={{ headerShown: true }} />
       <Stack.Screen name="auth/login" options={{ headerShown: true }} />
       <Stack.Screen name="auth/signup" options={{ headerShown: true }} />

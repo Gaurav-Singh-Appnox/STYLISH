@@ -1,26 +1,20 @@
-import { useEffect } from 'react';
-import { router } from 'expo-router';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { router } from "expo-router";
+import { useEffect } from "react";
 
 export default function Index() {
   useEffect(() => {
     const checkFirstTimeUser = async () => {
-      const isFirstTime = await AsyncStorage.getItem('first_time');
-      
+      const isFirstTime = await AsyncStorage.getItem("first_time");
+
       if (isFirstTime === null) {
-        // First time user
-        await AsyncStorage.setItem('first_time', 'false');
-        router.replace('/onboarding');
+        router.replace("./first-splash");
       } else {
-        // Check if user is logged in
-        const token = await AsyncStorage.getItem('user_token');
-        
+        const token = await AsyncStorage.getItem("user_token");
         if (token) {
-          // Logged in user
-          router.replace('/initial-load');
+          router.replace("/initial-load");
         } else {
-          // Not logged in
-          router.replace('/auth/login');
+          router.replace("/auth/login");
         }
       }
     };
