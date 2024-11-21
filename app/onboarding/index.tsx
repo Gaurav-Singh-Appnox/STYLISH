@@ -1,20 +1,14 @@
-import { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { router } from 'expo-router';
+import { router } from "expo-router";
+import { useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import OrderOnboard from "./orderOnboard";
+import PaymentOnboard from "./paymentOnboard";
+import ProductOnboard from "./productOnboard";
 
 const OnboardingScreens = [
-  {
-    title: 'Choose Product',
-    description: 'Browse and select from our wide range of products'
-  },
-  {
-    title: 'Make Payment',
-    description: 'Secure and easy payment options'
-  },
-  {
-    title: 'Get Order',
-    description: 'Quick delivery to your doorstep'
-  }
+  <ProductOnboard />,
+  <PaymentOnboard />,
+  <OrderOnboard />,
 ];
 
 export default function Onboarding() {
@@ -24,41 +18,49 @@ export default function Onboarding() {
     if (currentScreen < OnboardingScreens.length - 1) {
       setCurrentScreen(currentScreen + 1);
     } else {
-      router.replace('/auth/login');
+      router.replace("/auth/login");
     }
   };
 
   const handleSkip = () => {
-    router.replace('/auth/login');
+    router.replace("/auth/login");
   };
 
   return (
-    <View>
-      {/* Onboarding screen content */}
-      <TouchableOpacity onPress={handleSkip} style={styles.skipButton}>
-        <Text>Skip</Text>
-      </TouchableOpacity>
-
-      <Text>{OnboardingScreens[currentScreen].title}</Text>
-      <Text>{OnboardingScreens[currentScreen].description}</Text>
-
-      <TouchableOpacity onPress={handleNext}>
-        <Text>{currentScreen < OnboardingScreens.length - 1 ? 'Next' : 'Get Started'}</Text>
-      </TouchableOpacity>
+    <View style={styles.container}>
+      <View style={styles.skipButtonContainer}>
+        <Text>
+          {currentScreen + 1}/{OnboardingScreens.length}
+        </Text>
+        <TouchableOpacity onPress={handleSkip}>
+          <Text>Skip</Text>
+        </TouchableOpacity>
+      </View>
+      {OnboardingScreens[currentScreen]}
+      <View style={styles.nextBtnContainer}>
+        <TouchableOpacity onPress={handleNext}>
+          <Text>
+            {currentScreen < OnboardingScreens.length - 1
+              ? "Next"
+              : "Get Started"}
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    skipButton: {
-        position: 'absolute',
-        top: 50,
-        right: 20
-      }
-  });
+  container: {
+    flex: 1,
+    justifyContent: "space-between",
+    padding: 30,
+  },
+  skipButtonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  nextBtnContainer: {
+    flexDirection: "row-reverse",
+  },
+});
