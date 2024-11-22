@@ -1,14 +1,9 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import { useState } from "react";
-import {
-  Image,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
+import Button from "../../components/common/Button";
+import CustomInput from "../../components/common/CustomInput";
 
 export default function SignUp() {
   const [email, setEmail] = useState("");
@@ -20,7 +15,7 @@ export default function SignUp() {
       alert("Passwords do not match!");
       return;
     }
-    // Assuming successful signup
+    
     await AsyncStorage.setItem("user_token", "your_token_here");
     router.replace("/initial-load");
   };
@@ -32,40 +27,31 @@ export default function SignUp() {
   return (
     <View style={styles.container}>
       <Text style={styles.signupWelcomeText}>Create an Account</Text>
-      <TextInput
-        value={email}
-        onChangeText={setEmail}
-        placeholder="Email"
-        style={styles.input}
-      />
-      <TextInput
-        value={password}
-        onChangeText={setPassword}
-        placeholder="Password"
-        secureTextEntry
-        style={styles.input}
-      />
-      <TextInput
-        value={confirmPassword}
-        onChangeText={setConfirmPassword}
-        placeholder="Confirm Password"
-        secureTextEntry
-        style={styles.input}
-      />
-      <TouchableOpacity onPress={handleSignUp} style={styles.signupButton}>
-        <Text style={styles.signupButtonText}>Sign Up</Text>
-      </TouchableOpacity>
+      <View style={styles.inputContainer}>
+        <CustomInput
+          value={email}
+          onChangeText={setEmail}
+          placeholder="Email"
+          leftIcon="envelope"
+        />
 
-      <View style={styles.accountExistText}>
-        <Text style={styles.accountExistMessage}>
-          Already have an account?{" "}
-          <Text
-            style={styles.accountExistLink}
-            onPress={handleLogin}
-          >
-            Login
-          </Text>
-        </Text>
+        <CustomInput
+          value={password}
+          onChangeText={setPassword}
+          placeholder="Password"
+          secureTextEntry
+          leftIcon="lock"
+        />
+        <CustomInput
+          value={confirmPassword}
+          onChangeText={setConfirmPassword}
+          placeholder="confirm password"
+          secureTextEntry
+          leftIcon="lock"
+        />
+      </View>
+      <View style={styles.btnContainer}>
+        <Button title={"Sign up"} />
       </View>
 
       <View style={styles.socialLogin}>
@@ -80,6 +66,14 @@ export default function SignUp() {
           <View style={styles.loginIcon}>
             <Image source={require("../../assets/images/facebookIcon.png")} />
           </View>
+        </View>
+        <View style={styles.accountExistText}>
+          <Text style={styles.accountExistMessage}>
+            Already have an account?{" "}
+            <Text style={styles.accountExistLink} onPress={handleLogin}>
+              Login
+            </Text>
+          </Text>
         </View>
       </View>
     </View>
@@ -97,6 +91,7 @@ const styles = StyleSheet.create({
     fontSize: 36,
     fontWeight: "700",
     lineHeight: 43,
+    marginBottom: 36,
   },
   input: {
     marginVertical: 8,
@@ -117,7 +112,6 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   accountExistText: {
-    marginTop: 20,
     alignItems: "center",
   },
   accountExistMessage: {
@@ -138,6 +132,7 @@ const styles = StyleSheet.create({
   socialLogin: {
     flexDirection: "column",
     alignItems: "center",
+    marginTop: 52,
   },
   socialLoginIcons: {
     flexDirection: "row",
@@ -153,5 +148,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#F83758",
     padding: 15,
+  },
+  inputContainer: {
+    flexDirection: "column",
+    gap: 31,
+  },
+  btnContainer: {
+    marginTop: 52,
   },
 });
