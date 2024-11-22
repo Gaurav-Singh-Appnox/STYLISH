@@ -26,7 +26,7 @@ export default function SignUp() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.signupWelcomeText}>Create an Account</Text>
+      <Text style={styles.signupWelcomeText}>Create an account</Text>
       <View style={styles.inputContainer}>
         <CustomInput
           value={email}
