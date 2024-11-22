@@ -1,18 +1,13 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import { useState } from "react";
-import {
-  Image,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import Button from "../../components/common/Button";
+import CustomInput from "../../components/common/CustomInput";
 
 export default function Login() {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState("")
 
   const handleLogin = async () => {
     await AsyncStorage.setItem("user_token", "your_token_here");
@@ -30,22 +25,25 @@ export default function Login() {
   return (
     <View style={styles.container}>
       <Text style={styles.loginWelcomeText}>Welcome Back!</Text>
-      <TextInput
-        value={email}
-        onChangeText={setEmail}
-        placeholder="Email"
-        style={styles.input}
-      />
-      <TextInput
-        value={password}
-        onChangeText={setPassword}
-        placeholder="Password"
-        secureTextEntry
-        style={styles.input}
-      />
-      <TouchableOpacity onPress={handleLogin} style={styles.loginButton}>
-        <Text style={styles.loginButtonText}>Login</Text>
-      </TouchableOpacity>
+      <View style={styles.inputContainer}>
+        <CustomInput
+          value={email}
+          onChangeText={setEmail}
+          placeholder="Email"
+          leftIcon="envelope"
+        />
+
+        <CustomInput
+          value={password}
+          onChangeText={setPassword}
+          placeholder="Password"
+          secureTextEntry
+          leftIcon="lock"
+        />
+      </View>
+      <View style={styles.btnContainer} >
+        <Button title={"Login"} onPress={handleLogin} />
+      </View>
       <TouchableOpacity onPress={handleForgotPassword}>
         <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
       </TouchableOpacity>
@@ -64,16 +62,13 @@ export default function Login() {
           </View>
         </View>
         <View style={styles.accountExistText}>
-        <Text style={styles.accountExistMessage}>
-          Don't have an account?{" "}
-          <Text
-            style={styles.accountExistLink}
-            onPress={handleSignup}
-          >
-            Sign Up
+          <Text style={styles.accountExistMessage}>
+            Don't have an account?{" "}
+            <Text style={styles.accountExistLink} onPress={handleSignup}>
+              Sign Up
+            </Text>
           </Text>
-        </Text>
-      </View>
+        </View>
       </View>
     </View>
   );
@@ -90,30 +85,12 @@ const styles = StyleSheet.create({
     fontSize: 36,
     fontWeight: "700",
     lineHeight: 43,
-    marginBottom:36
-  },
-  input: {
-    marginVertical: 8,
-    padding: 12,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 8,
-  },
-  loginButton: {
-    backgroundColor: "#F83758",
-    padding: 12,
-    borderRadius: 8,
-    marginVertical: 12,
-  },
-  loginButtonText: {
-    color: "white",
-    textAlign: "center",
-    fontWeight: "700",
+    marginBottom: 36,
   },
   forgotPasswordText: {
     textAlign: "right",
-    color: "#575757",
-    // marginVertical: ,
+    color: "#F83758",
+    marginTop: 9,
   },
   continueText: {
     textAlign: "center",
@@ -124,15 +101,13 @@ const styles = StyleSheet.create({
   socialLogin: {
     flexDirection: "column",
     alignItems: "center",
-    marginTop:52,
-    // backgroundColor:"red"
+    marginTop: 52,
   },
   socialLoginIcons: {
     flexDirection: "row",
     justifyContent: "center",
     gap: 10,
     marginTop: 20,
-    // marginBottom: 30,
   },
   loginIcon: {
     height: 54,
@@ -149,10 +124,18 @@ const styles = StyleSheet.create({
   accountExistMessage: {
     fontSize: 14,
     color: "#575757",
+    fontWeight: "600",
   },
   accountExistLink: {
     color: "#F83758",
     fontWeight: "bold",
     textDecorationLine: "underline",
+  },
+  inputContainer: {
+    flexDirection: "column",
+    gap: 31,
+  },
+  btnContainer: {
+    marginTop: 52,
   },
 });
