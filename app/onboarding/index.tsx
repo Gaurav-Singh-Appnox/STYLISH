@@ -1,9 +1,9 @@
 import { router } from "expo-router";
 import { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import OrderOnboard from "./orderOnboard";
-import PaymentOnboard from "./paymentOnboard";
-import ProductOnboard from "./productOnboard";
+import OrderOnboard from "./OrderOnboard";
+import PaymentOnboard from "./PaymentOnboard";
+import ProductOnboard from "./ProductOnboard";
 
 const OnboardingScreens = [
   <ProductOnboard />,
