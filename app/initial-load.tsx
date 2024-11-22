@@ -1,23 +1,55 @@
 import { router } from "expo-router";
 import { useEffect } from "react";
-import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Image,
+  ImageBackground,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import {
+  useFonts,
+  LibreCaslonText_400Regular,
+  LibreCaslonText_700Bold,
+} from "@expo-google-fonts/libre-caslon-text";
 
 export default function InitialLoad() {
   useEffect(() => {
     const loadInitialContent = async () => {
       console.log("Loading initial content...");
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       console.log("Navigating to /tabs...");
       router.replace("/(tabs)/home");
     };
 
     loadInitialContent();
   }, []);
+  const [fontsLoaded] = useFonts({
+    LibreCaslonText_400Regular,
+    LibreCaslonText_700Bold,
+  });
 
   return (
     <View style={styles.container}>
-      <ActivityIndicator size="large" />
-      <Text>Loading content...</Text>
+      <ImageBackground
+        style={styles.backgroundImage}
+        source={require("@/assets/images/clothes.png")}
+      >
+        <View>
+        <Text style={styles.heading}>Stylish</Text>
+        
+        </View>
+          
+
+        <View style={styles.description}>
+          <Text style={styles.descriptionText}>         You Want!{" "} </Text>
+          <Text style={styles.descriptionText}>  Authentic ,Here  {" "} </Text>
+          <Text style={styles.descriptionText}>          you go!{" "} </Text>
+
+          <Text style={{fontSize:18,color:"white",textAlign:"center",marginTop:10,}}>Find it here , buy it now!{" "}</Text>
+        </View>
+      </ImageBackground>
     </View>
   );
 }
@@ -25,13 +57,40 @@ export default function InitialLoad() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    // flexDirection: "row",
+    
+  },
+  backgroundImage: {
+    flex: 1,
+    resizeMode: "cover",
+    justifyContent:"center",
+    gap:'50%',
+    alignItems:"center",
+   
+
+  },
+  heading: {
+
+    fontFamily: "LibreCaslonText_700Bold",
+    fontSize: 70,
+    color: "#ffffff",
+  },
+  description: {
+
+    color: "#ffffff",
+     borderRadius:20,
+     backgroundColor:""
+    
+  },
+  descriptionText: {
+    opacity:1,
+    fontSize: 34,
+    fontWeight:"900",
+    color: "white",
   },
 });
 
-
+// Let me break down the navigation flow I've designed:
 
 // 1. Root Navigation (`app/_layout.tsx`):
 //    - Defines the main stack of screens
@@ -77,4 +136,3 @@ const styles = StyleSheet.create({
 // 4. Consider adding more robust state management (e.g., Redux, Context)
 
 // Would you like me to elaborate on any part of the navigation structure or discuss implementation details further?
-
