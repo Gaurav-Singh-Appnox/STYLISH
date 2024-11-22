@@ -24,7 +24,7 @@ export default function Login() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.loginWelcomeText}>Welcome Back!</Text>
+      <Text style={styles.loginWelcomeText}>Welcome {"\n"}Back!</Text>
       <View style={styles.inputContainer}>
         <CustomInput
           value={email}
