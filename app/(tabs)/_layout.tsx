@@ -3,6 +3,7 @@ import { Tabs } from "expo-router";
 
 export default function TabLayout() {
   return (
+    
     <Tabs>
       <Tabs.Screen
         name="home"
@@ -11,7 +12,7 @@ export default function TabLayout() {
           headerShown:false,
           tabBarIcon: ({ color, size }) => (
             <FontAwesome name="home" color={color} size={size} />
-          ),
+          )
         }}
       />
       <Tabs.Screen
