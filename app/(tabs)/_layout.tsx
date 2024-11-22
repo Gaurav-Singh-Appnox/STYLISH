@@ -8,6 +8,7 @@ export default function TabLayout() {
         name="home"
         options={{
           title: "Home",
+          headerShown:false,
           tabBarIcon: ({ color, size }) => (
             <FontAwesome name="home" color={color} size={size} />
           ),
