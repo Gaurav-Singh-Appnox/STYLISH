@@ -15,9 +15,11 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@expo-google-fonts/libre-caslon-text": "^0.2.3",
     "@expo/vector-icons": "^14.0.2",
     "@react-native-async-storage/async-storage": "^2.1.0",
     "@react-navigation/bottom-tabs": "^7.0.0",
+    "@react-navigation/drawer": "^7.0.7",
     "@react-navigation/native": "^7.0.0",
     "expo": "~52.0.9",
     "expo-blur": "~14.0.1",

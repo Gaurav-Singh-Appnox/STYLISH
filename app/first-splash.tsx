@@ -6,7 +6,7 @@ import { Image, StyleSheet, View } from "react-native";
 export default function FirstSplash() {
   useEffect(() => {
     const navigateToOnboarding = async () => {
-      // await AsyncStorage.setItem("first_time", "false");
+       await AsyncStorage.setItem("first_time", "false");
       setTimeout(() => {
         router.replace("/onboarding");
       }, 2000);
