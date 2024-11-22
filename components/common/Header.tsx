@@ -8,21 +8,23 @@ export default function Header() {
     <View>
       <View
         style={{
-          width: "100%",
-          height: 90,
+        //   width: "100%",
+          height: 56,
           marginTop: 5,
           flexDirection: "row",
           justifyContent: "space-between",
-          alignItems:"center"
+          alignItems:"center",
+          marginHorizontal:16,
+          backgroundColor:""
         }}
       >
-        <Entypo name="menu" size={37} color="black" />
+        <Entypo name="menu" size={32} color="black" />
         <Image
           style={{ width: 111.78, height: 31 }}
           source={require("../../assets/images/headerLogo.png")}
         />
         <Image
-          style={{ width: 40, height: 40,marginRight:5 }}
+          style={{ width: 40, height: 40 }}
           source={require("../../assets/images/userImg.png")}
         />
       </View>
