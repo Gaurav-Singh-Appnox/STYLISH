@@ -21,18 +21,19 @@ const styles = StyleSheet.create({
   searchContainer: {
     backgroundColor: "",
     flexDirection: "row",
-    width: "100%",
+    // width: "100%",
     height: 40,
     marginTop:16,
-    
+    paddingHorizontal:16,
   },
   searchBar: {
     backgroundColor: "white",
     borderRadius:10,
     flexDirection: "row",
-    width: 346,
+    width: '100%',
+    
     justifyContent: "space-between",
-    marginHorizontal: 38,
+    // marginHorizontal: 38,
     alignItems:"center",
   },
 });
