@@ -28,10 +28,9 @@ export default function RootLayout() {
             headerRight: () => (
               <TouchableOpacity onPress={() => router.push("/Cart")}>
                 <FontAwesome6 name="cart-shopping" size={24} color="black" />
-              </TouchableOpacity>
-            ),
-          }}
+              </TouchableOpacity>),}}
         />
+        <Stack.Screen name="profile" options={{headerShown:true, headerTitle:"Profile"}}/>
       </Stack>
     </Provider>
   );
