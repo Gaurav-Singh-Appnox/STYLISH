@@ -1,22 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createSlice } from "@reduxjs/toolkit";
 
-const getInitialState = async () => {
-  try {
-    const user = await AsyncStorage.getItem("user");
-    const token = await AsyncStorage.getItem("token");
-    return {
-      user: user ? JSON.parse(user) : null,
-      token: token || null,
-    };
-  } catch (error) {
-    console.error("Error loading initial state:", error);
-    return {
-      user: null,
-      token: null,
-    };
-  }
-};
+
 
 const authSlice = createSlice({
   name: "auth",

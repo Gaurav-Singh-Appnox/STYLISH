@@ -11,15 +11,19 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "../store/slices/cartSlice";
 
 export default function DetailsPage() {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const products = useSelector((state) => state.productSlice.data);
   const { id } = useLocalSearchParams();
   const productId = parseInt(id);
-
   const product = products.find((item) => item.id === productId);
+
+  const handleAddToCart = (id)=>{
+    dispatch(addToCart(id))
+  }
 
   if (!product) {
     return (
@@ -46,7 +50,8 @@ export default function DetailsPage() {
       <TouchableOpacity
         style={styles.addToCartButton}
         onPress={() => {
-          console.log("Added to Cart!");
+          handleAddToCart(product.id)
+          console.log('add to cart clicked', typeof product.id);
         }}
       >
         <Text style={styles.addToCartButtonText}>Add to Cart</Text>

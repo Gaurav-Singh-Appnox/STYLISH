@@ -1,23 +1,20 @@
-import { Provider, useDispatch } from "react-redux";
-import  store  from "../store/store"
-import { router, Stack } from "expo-router";
-import { TouchableOpacity } from "react-native";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import { Stack, useRouter } from "expo-router";
 import { useEffect } from "react";
+import { TouchableOpacity } from "react-native";
+import { Provider, useDispatch } from "react-redux";
 import { loadCartFromStorage, setCart } from "../store/slices/cartSlice";
+import store from "../store/store";
 
 export default function RootLayout() {
   return (
-    <Provider store={store}> 
+    <Provider store={store}>
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="first-splash" />
-        <Stack.Screen name="onboarding/index" options={{ headerShown: false }} />
-        <Stack.Screen name="auth/login" options={{ headerShown: false }} />
-        <Stack.Screen name="auth/signup" options={{ headerShown: false }} />
-        <Stack.Screen
-          name="auth/reset-password"
-          options={{ headerShown: false }}
-        />
+        <Stack.Screen name="onboarding/index" />
+        <Stack.Screen name="auth/login" />
+        <Stack.Screen name="auth/signup" />
+        <Stack.Screen name="auth/reset-password" />
         <Stack.Screen name="initial-load" />
         <Stack.Screen name="(tabs)" />
         <Stack.Screen
@@ -25,11 +22,14 @@ export default function RootLayout() {
           options={{
             headerShown: true,
             headerTitle: "",
-            headerRight: () => (
-              <TouchableOpacity onPress={() => router.push("/Cart")}>
-                <FontAwesome6 name="cart-shopping" size={24} color="black" />
-              </TouchableOpacity>
-            ),
+            headerRight: () => <CartIcon />,
+          }}
+        />
+        <Stack.Screen
+          name="cart"
+          options={{
+            headerShown: true,
+            headerTitle: "Cart",
           }}
         />
       </Stack>
@@ -37,6 +37,19 @@ export default function RootLayout() {
   );
 }
 
+function CartIcon() {
+  const router = useRouter();
+  return (
+    <TouchableOpacity
+      onPress={() => {
+        console.log("cart clicked");
+        router.push("/cart");
+      }}
+    >
+      <FontAwesome6 name="cart-shopping" size={24} color="black" />
+    </TouchableOpacity>
+  );
+}
 
 function CartInitializer() {
   const dispatch = useDispatch();

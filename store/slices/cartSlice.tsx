@@ -1,29 +1,33 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import productsData from "../../constants/productsData";
 
-type product ={
-    id :string | number,
-    name: string,
-    price: number,
-    quantity: number,
-    totalPrice: number,
-    img:string
-}
+type Product = {
+  id: string | number;
+  name: string;
+  description: string;
+  productDetails: string;
+  price: number;
+  quantity: number;
+  totalPrice: number;
+  img: string;
+  rating: number;
+  category: string;
+};
 
+type Cart = {
+  items: Product[];
+  totalQuantity: number;
+  totalAmount: number;
+};
 
-type cart ={
-    items :product[],
-    totalQuantity : number,
-    totalAmount : number
-}
-
-const initialState :cart = {
+const initialState: Cart = {
   items: [],
   totalQuantity: 0,
   totalAmount: 0,
 };
 
-const saveCartToStorage = async (cart:cart) => {
+const saveCartToStorage = async (cart: Cart) => {
   try {
     await AsyncStorage.setItem("cart", JSON.stringify(cart));
   } catch (error) {
@@ -31,7 +35,7 @@ const saveCartToStorage = async (cart:cart) => {
   }
 };
 
-const loadCartFromStorage = async () => {
+const loadCartFromStorage = async (): Promise<Cart> => {
   try {
     const storedCart = await AsyncStorage.getItem("cart");
     return storedCart ? JSON.parse(storedCart) : initialState;
@@ -45,42 +49,57 @@ const cart = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    setCart: (state, action) => {
+    setCart: (state, action: PayloadAction<Cart>) => {
       const { items, totalQuantity, totalAmount } = action.payload;
       state.items = items;
       state.totalQuantity = totalQuantity;
       state.totalAmount = totalAmount;
     },
-    addToCart: (state, action) => {
-      const { id, name, price, quantity = 1, img } = action.payload;
-      const existingItem = state.items.find((item) => item.id === id);
-
-      if (existingItem) {
-        existingItem.quantity += quantity;
-        existingItem.totalPrice += price * quantity;
-      } else {
-        state.items.push({
-          id,
-          name,
-          price,
-          quantity,
-          totalPrice: price * quantity,
-          img,
-        });
-      }
-      state.totalQuantity += quantity;
-      state.totalAmount += price * quantity;
-      saveCartToStorage(state);
-    },
-    removeFromCart: (state, action) => {
+    addToCart: (state, action: PayloadAction<{ id: string | number }>) => {
       const { id } = action.payload;
       const existingItem = state.items.find((item) => item.id === id);
 
       if (existingItem) {
-        state.totalQuantity -= existingItem.quantity;
-        state.totalAmount -= existingItem.totalPrice;
+        existingItem.quantity += 1;
+        existingItem.totalPrice += existingItem.price;
+      } else {
+        const product: any = productsData.find((item) => item.id === id);
 
-        state.items = state.items.filter((item) => item.id !== id);
+        if (product) {
+          state.items.push({
+            ...product,
+            quantity: 1,
+            totalPrice: product.price,
+          });
+        }
+      }
+
+      // Update cart totals
+      state.totalQuantity += 1;
+      state.totalAmount +=
+        productsData.find((item) => item.id === id)?.price || 0;
+
+      // Save updated cart to storage
+      saveCartToStorage(state);
+    },
+    removeFromCart: (state, action: PayloadAction<{ id: string | number }>) => {
+      const { id } = action.payload;
+
+      // Find product in cart
+      const existingItem = state.items.find((item) => item.id === id);
+
+      if (existingItem) {
+        if (existingItem.quantity > 1) {
+          // If quantity > 1, decrease it and update total price
+          existingItem.quantity -= 1;
+          existingItem.totalPrice -= existingItem.price;
+        } else {
+          // If quantity is 1, remove the product from the cart
+          state.items = state.items.filter((item) => item.id !== id);
+        }
+
+        state.totalQuantity -= 1;
+        state.totalAmount -= existingItem.price;
         saveCartToStorage(state);
       }
     },
