@@ -1,17 +1,68 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 import { router } from "expo-router";
 import { useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import * as yup from "yup";
 import Button from "../../components/common/Button";
 import CustomInput from "../../components/common/CustomInput";
+import {useDispatch} from "react-redux"
+import { setUser } from "../../store/slices/authSlice";
+
+const loginSchema = yup
+  .object({
+    email: yup.string().email().required("Email is required."),
+    password: yup
+      .string()
+      .min(6, "Password must be at least 6 characters.")
+      .required("Password is required."),
+  })
+  .required();
+
+type ErrorState = {
+  [key: string]: string;
+} & {
+  api?: string;
+};
 
 export default function Login() {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("")
+  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState<ErrorState>({});
+  const dispatch = useDispatch();
 
   const handleLogin = async () => {
-    await AsyncStorage.setItem("user_token", "your_token_here");
-    router.replace("/initial-load");
+    try {
+      await loginSchema.validate({ email, password }, { abortEarly: false });
+      setErrors({});
+      const response = await axios.post(
+        "https://stylish-backend-exfz.onrender.com/api/v1/auth/login",
+        {
+          email,
+          password,
+        }
+      );
+      dispatch(setUser(response.data))
+      router.replace("/initial-load");
+    } catch (error) {
+      if (error instanceof yup.ValidationError) {
+        const validationErrors: ErrorState = {};
+        error.inner.forEach((err) => {
+          if (err.path) {
+            validationErrors[err.path] = err.message;
+          }
+        });
+        setErrors(validationErrors);
+      } else if (axios.isAxiosError(error)) {
+        if (error.response?.status === 401) {
+          setErrors({ api: "Invalid email or password." });
+        } else {
+          setErrors({ api: "Failed to login. Please try again later." });
+        }
+      } else {
+        setErrors({ api: "An unexpected error occurred." });
+      }
+    }
   };
 
   const handleForgotPassword = () => {
@@ -32,6 +83,7 @@ export default function Login() {
           placeholder="Email"
           leftIcon="envelope"
         />
+        {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
 
         <CustomInput
           value={password}
@@ -40,9 +92,13 @@ export default function Login() {
           secureTextEntry
           leftIcon="lock"
         />
+        {errors.password && (
+          <Text style={styles.errorText}>{errors.password}</Text>
+        )}
       </View>
-      <View style={styles.btnContainer} >
+      <View style={styles.btnContainer}>
         <Button title={"Login"} onPress={handleLogin} />
+        {errors.api && <Text style={styles.errorText}>{errors.api}</Text>}
       </View>
       <TouchableOpacity onPress={handleForgotPassword}>
         <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
@@ -97,6 +153,11 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#575757",
     fontWeight: "500",
+  },
+  errorText: {
+    color: "red",
+    fontSize: 12,
+    marginTop: 4,
   },
   socialLogin: {
     flexDirection: "column",
