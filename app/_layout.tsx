@@ -1,4 +1,6 @@
-import { Stack } from "expo-router";
+import { router, Stack } from "expo-router";
+import { TouchableOpacity } from "react-native";
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 
 export default function RootLayout() {
   return (
@@ -13,6 +15,18 @@ export default function RootLayout() {
       />
       <Stack.Screen name="initial-load" />
       <Stack.Screen name="(tabs)" />
+      <Stack.Screen
+        name="detailsPage"
+        options={{
+          headerShown: true,
+          headerTitle: "",
+          headerRight: () => (
+            <TouchableOpacity onPress={() => router.push("/Cart")}>
+              <FontAwesome6 name="cart-shopping" size={24} color="black" />
+            </TouchableOpacity>
+          ),
+        }}
+      />
     </Stack>
   );
 }

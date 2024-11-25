@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#f9f9f9",
-    // paddingHorizontal:10,
+    // paddingHorizontal:4,
   },
   img:{
     marginTop:16,
