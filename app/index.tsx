@@ -6,7 +6,6 @@ export default function Index() {
   useEffect(() => {
     const checkFirstTimeUser = async () => {
       const isFirstTime = await AsyncStorage.getItem("first_time");
-
       if (isFirstTime === null) {
         router.replace("./first-splash");
       } else {
