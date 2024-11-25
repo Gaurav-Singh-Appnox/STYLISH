@@ -33,8 +33,9 @@ const styles = StyleSheet.create({
     height: 70,
   },
   textContainer: {
+   width:'79%',
+    backgroundColor:"",
     // flex: 1,
-    width:294, 
     justifyContent: 'center',
   },
   heading: {

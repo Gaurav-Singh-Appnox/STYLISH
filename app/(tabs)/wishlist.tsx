@@ -1,10 +1,19 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import React from 'react'
+import { router } from 'expo-router';
 
 const wishlist = () => {
+  const handlePress=()=>{
+    router.push('/detailsPage')
+
+  }
   return (
     <View style={styles.container}>
-      <Text>wishlist</Text>
+
+    <TouchableOpacity onPress={handlePress}>
+    <Text>wishlist</Text>
+      
+    </TouchableOpacity>
     </View>
   )
 }
