@@ -3,7 +3,7 @@ import React from 'react'
 import Header from '@/components/common/Header';
 import ShopList from '@/components/specific/ShopList';
 import SearchBar from '@/components/common/SearchBar';
-import detailsPage from '../detailsPage';
+
 
 const shop = () => {
   return (
