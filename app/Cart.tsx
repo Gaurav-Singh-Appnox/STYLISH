@@ -10,13 +10,17 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { clearCart, removeFromCart } from "../store/slices/cartSlice";
 import Button from "@/components/common/Button";
+import { router } from "expo-router";
+import AntDesign from "@expo/vector-icons/AntDesign";
 
 export default function Cart() {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
   const totalAmount = useSelector((state) => state.cart.totalAmount);
-  
-  console.log('cartItems',cartItems.length);
+
+  const handleCheckout = () => {
+    router.push("/checkout");
+  };
 
   const handleRemoveItem = (id) => {
     dispatch(removeFromCart({ id }));
@@ -34,47 +38,89 @@ export default function Cart() {
     );
   }
 
-  return (<SafeAreaView>
-     <ScrollView contentContainerStyle={styles.container}>
-      {cartItems.map((item) => (
-        <View key={item.id} style={styles.cartItem}>
-          <Image source={{ uri: item.img }} style={styles.productImage} />
-          <View style={styles.productDetails}>
-            <Text style={styles.productName}>{item.name}</Text>
-            <Text style={styles.productPrice}>${item.price.toFixed(2)}</Text>
-            <Text style={styles.productQuantity}>
-              Quantity: {item.quantity}
-            </Text>
+  return (
+    <SafeAreaView>
+      <ScrollView contentContainerStyle={styles.container}>
+        <Text>Delivery Address:</Text>
+        <View style={styles.delivery}>
+          <View style={styles.addressText}>
+            <Text>Address:</Text>
+            <Text>216 St Paul's Rd, London N1 2LL, UK</Text>
+            <Text>Contact : +44-784232</Text>
           </View>
+          <View style={styles.newAddress}>
+            <AntDesign name="pluscircleo" size={24} color="black" />
+          </View>
+        </View>
+
+        <Text style={{ paddingBottom: 10, fontWeight: 700, fontSize: 20 }}>
+          Shopping List
+        </Text>
+        {cartItems.map((item) => (
+          <View key={item.id} style={styles.cartItem}>
+            <Image source={{ uri: item.img }} style={styles.productImage} />
+            <View style={styles.productDetails}>
+              <Text style={styles.productName}>{item.name}</Text>
+              <Text style={styles.productPrice}>${item.price.toFixed(2)}</Text>
+              <Text style={styles.productQuantity}>
+                Quantity: {item.quantity}
+              </Text>
+            </View>
+            <TouchableOpacity
+              style={styles.removeButton}
+              onPress={() => handleRemoveItem(item.id)}
+            >
+              <Text style={styles.removeButtonText}>Remove</Text>
+            </TouchableOpacity>
+          </View>
+        ))}
+
+        <View style={styles.cartSummary}>
+          <Text style={styles.totalAmount}>
+            Total: ${totalAmount.toFixed(2)}
+          </Text>
           <TouchableOpacity
-            style={styles.removeButton}
-            onPress={() => handleRemoveItem(item.id)}
+            style={styles.clearButton}
+            onPress={handleClearCart}
           >
-            <Text style={styles.removeButtonText}>Remove</Text>
+            <Text style={styles.clearButtonText}>Clear Cart</Text>
           </TouchableOpacity>
         </View>
-      ))}
-
-      <View style={styles.cartSummary}>
-        <Text style={styles.totalAmount}>Total: ${totalAmount.toFixed(2)}</Text>
-        <TouchableOpacity style={styles.clearButton} onPress={handleClearCart}>
-          <Text style={styles.clearButtonText}>Clear Cart</Text>
-        </TouchableOpacity>
-      </View>
-      <Button title={"Checkout"}/>
-    </ScrollView>
-
-  </SafeAreaView>
-   
+        <Button onPress={handleCheckout} title={"Proceed to Payment"} />
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex:1,
-    padding: 16,
+    paddingHorizontal: 16,
     backgroundColor: "white",
   },
+  delivery: {
+    width: "100%",
+    flexDirection: "row",
+    backgroundColor: "",
+    paddingVertical: 30,
+    gap: "10",
+  },
+  newAddress: {
+    
+    elevation:3,
+    width: "20%",
+    backgroundColor: "",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  addressText: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    elevation: 3,
+    width: "70%",
+    backgroundColor: "",
+    fontSize: 10,
+  },
+
   emptyCartContainer: {
     justifyContent: "center",
     alignItems: "center",
@@ -130,7 +176,7 @@ const styles = StyleSheet.create({
   cartSummary: {
     marginTop: 20,
     alignItems: "center",
-    marginBottom:10,
+    marginBottom: 10,
   },
   totalAmount: {
     fontSize: 18,
