@@ -10,6 +10,7 @@ import store from "../store/store";
 export default function RootLayout() {
   return (
     <Provider store={store}>
+      <AppInitializer />
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="first-splash" />
         <Stack.Screen name="onboarding/index" />
@@ -24,7 +25,9 @@ export default function RootLayout() {
             headerRight: () => <CartIcon />,
           }}
         />
-        <Stack.Screen name="Cart" options={{
+        <Stack.Screen
+          name="Cart"
+          options={{
             headerShown: true,
             headerTitle: "Cart",
           }}
@@ -54,7 +57,6 @@ function CartIcon() {
 
 function AppInitializer() {
   const dispatch = useDispatch();
-
   useEffect(() => {
     dispatch(initializeWishlist());
 

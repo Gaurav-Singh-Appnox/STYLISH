@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import productsData from "../../constants/productsData";
 
 type Product = {
-  id: string | number;
+  id: number;
   name: string;
   description: string;
   productDetails: string;
@@ -57,11 +57,9 @@ const cart = createSlice({
       state.totalQuantity = totalQuantity;
       state.totalAmount = totalAmount;
     },
-
-    addToCart: (state, action: PayloadAction<{ id: string | number }>) => {
-
+    
+    addToCart: (state, action: PayloadAction) => {
       const id = action.payload;
-      
       const existingItem = state.items.find((item) => item.id === id);
     
 
@@ -70,37 +68,29 @@ const cart = createSlice({
         existingItem.totalPrice += existingItem.price;
       } else {
         const product: any = productsData.find((item) => item.id === id);
-
+        console.log(product);
         if (product) {
-          state.items.push({
-            ...product,
-            quantity: 1,
-            totalPrice: product.price,
-          });
+          state.items = [
+            ...state.items,
+            { ...product, quantity: 1, totalPrice: product.price },
+          ];
         }
       }
-
-      // Update cart totals
       state.totalQuantity += 1;
       state.totalAmount +=
         productsData.find((item) => item.id === id)?.price || 0;
-
-      // Save updated cart to storage
       saveCartToStorage(state);
     },
+
     removeFromCart: (state, action: PayloadAction<{ id: string | number }>) => {
       const { id } = action.payload;
-
-      // Find product in cart
       const existingItem = state.items.find((item) => item.id === id);
 
       if (existingItem) {
         if (existingItem.quantity > 1) {
-          // If quantity > 1, decrease it and update total price
           existingItem.quantity -= 1;
           existingItem.totalPrice -= existingItem.price;
         } else {
-          // If quantity is 1, remove the product from the cart
           state.items = state.items.filter((item) => item.id !== id);
         }
 

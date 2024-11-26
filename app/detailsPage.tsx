@@ -23,7 +23,9 @@ export default function DetailsPage() {
     (state) => state.productSlice.wishlistProducts
   );
   const { id } = useLocalSearchParams();
+
   const productId = parseInt(id);
+
   const product = products.find((item) => item.id === productId);
   const [isWishlist, setIsWishlist] = useState<boolean>(false);
 
@@ -32,10 +34,9 @@ export default function DetailsPage() {
     setIsWishlist(wished);
   }, [wishlistItems, productId]);
 
-  const handleAddToCart = (id) => {
-    console.log("the item in card id is :",id);
-    
-    dispatch(addToCart(id));
+
+  const handleAddToCart = () => {
+    dispatch(addToCart(productId));
   };
 
   const toggleWishlist = () => {
@@ -82,8 +83,7 @@ export default function DetailsPage() {
       <TouchableOpacity
         style={styles.addToCartButton}
         onPress={() => {
-          handleAddToCart(product.id);
-          console.log("add to cart clicked",  product.id);
+          handleAddToCart();
         }}
       >
         <Text style={styles.addToCartButtonText}>Add to Cart</Text>
