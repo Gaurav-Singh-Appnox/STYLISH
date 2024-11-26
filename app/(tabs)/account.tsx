@@ -1,23 +1,27 @@
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
-import React from "react";
-import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import { logOut } from "@/store/slices/authSlice";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { router } from "expo-router";
+import React from "react";
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { useDispatch } from "react-redux";
-import { logOut } from "@/store/slices/authSlice";
 const account = () => {
   const dispatch = useDispatch();
-  const handleLogout = () =>{
+  const handleLogout = () => {
     dispatch(logOut());
-    router.push('/auth/login')
+    router.replace("/auth/login");
+  };
 
-  }
-
-  const handleEdit = () =>{
-    router.push('/profile')
-
-  }
+  const handleEdit = () => {
+    router.push("/profile");
+  };
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.mainHeading}>Settings</Text>
@@ -32,7 +36,6 @@ const account = () => {
           }}
         >
           <View style={{ flexDirection: "row", gap: 20 }}>
-          
             <FontAwesome5 name="user" size={20} color="black" />
             <Text style={styles.sectionHeading}>Profile Settings</Text>
           </View>
@@ -72,7 +75,6 @@ const account = () => {
           </Text>
         </View>
       </View>
-      
 
       <View style={styles.paymentSetting}>
         <View
@@ -83,11 +85,11 @@ const account = () => {
             alignItems: "center",
           }}
         >
-             <View style={{ flexDirection: "row", gap: 20 }}>
-             <AntDesign name="creditcard" size={24} color="black" />
-             <Text style={styles.sectionHeading}>Payment Settings</Text>
-             </View>
-         
+          <View style={{ flexDirection: "row", gap: 20 }}>
+            <AntDesign name="creditcard" size={24} color="black" />
+            <Text style={styles.sectionHeading}>Payment Settings</Text>
+          </View>
+
           <TouchableOpacity>
             <Text style={styles.settingText}>Edit</Text>
           </TouchableOpacity>
@@ -122,27 +124,21 @@ const account = () => {
           }}
         >
           <Text style={styles.profileText}>Theme</Text>
-          <Text style={{color:"grey",fontSize:14}}>Dark</Text>
-
+          <Text style={{ color: "grey", fontSize: 14 }}>Dark</Text>
         </View>
-        <View  style={{
+        <View
+          style={{
             flexDirection: "row",
             justifyContent: "space-between",
-          }}>
-        <Text style={styles.profileText}>Using Since</Text>
-        <Text style={{color:"grey",fontSize:14}}>4sept2012</Text>
-
+          }}
+        >
+          <Text style={styles.profileText}>Using Since</Text>
+          <Text style={{ color: "grey", fontSize: 14 }}>4sept2012</Text>
         </View>
         <View>
-          <Text style={styles.profileText}>
-          Help and support
-          </Text>
+          <Text style={styles.profileText}>Help and support</Text>
         </View>
-        <TouchableOpacity onPress={handleLogout}>
-       
-        </TouchableOpacity>
-        
-
+        <TouchableOpacity onPress={handleLogout}></TouchableOpacity>
       </View>
       <View style={styles.appSettings}>
         <View
@@ -164,26 +160,26 @@ const account = () => {
           }}
         >
           <Text style={styles.profileText}>Languages</Text>
-          <Text style={{color:"grey",fontSize:14}}>English</Text>
-
+          <Text style={{ color: "grey", fontSize: 14 }}>English</Text>
         </View>
         <View>
-        <Text style={styles.profileText}>Delivery Address</Text>
+          <Text style={styles.profileText}>Delivery Address</Text>
         </View>
         <View>
-          <Text style={styles.profileText}>
-          Help and support
-          </Text>
+          <Text style={styles.profileText}>Help and support</Text>
         </View>
         <TouchableOpacity onPress={handleLogout}>
-        <View>
-          <Text style={[styles.profileText,{ color:"red",paddingLeft:20,marginBottom:20}]}>
-          Logout
-          </Text>
-        </View>
+          <View>
+            <Text
+              style={[
+                styles.profileText,
+                { color: "red", paddingLeft: 20, marginBottom: 20 },
+              ]}
+            >
+              Logout
+            </Text>
+          </View>
         </TouchableOpacity>
-        
-
       </View>
     </ScrollView>
   );
@@ -220,7 +216,7 @@ const styles = StyleSheet.create({
   profileText: {
     fontSize: 18,
     fontWeight: 500,
-    color:"#346b82"
+    color: "#346b82",
   },
   settingText: {
     fontSize: 16,

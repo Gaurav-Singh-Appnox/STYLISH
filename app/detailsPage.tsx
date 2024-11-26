@@ -34,6 +34,7 @@ export default function DetailsPage() {
     setIsWishlist(wished);
   }, [wishlistItems, productId]);
 
+
   const handleAddToCart = (id) => {
     console.log("the item in card id is :",id);
     
@@ -84,8 +85,10 @@ export default function DetailsPage() {
       <TouchableOpacity
         style={styles.addToCartButton}
         onPress={() => {
+
           handleAddToCart(product.id);
           console.log("add to cart clicked",  product.id);
+
         }}
       >
         <Text style={styles.addToCartButtonText}>Add to Cart</Text>

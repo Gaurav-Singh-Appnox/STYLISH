@@ -57,11 +57,9 @@ const cart = createSlice({
       state.totalQuantity = totalQuantity;
       state.totalAmount = totalAmount;
     },
-
-    addToCart: (state, action: PayloadAction<{ id: string | number }>) => {
-
+    
+    addToCart: (state, action: PayloadAction) => {
       const id = action.payload;
-      
       const existingItem = state.items.find((item) => item.id === id);
     
 
