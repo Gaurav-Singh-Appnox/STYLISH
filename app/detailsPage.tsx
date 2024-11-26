@@ -33,6 +33,8 @@ export default function DetailsPage() {
   }, [wishlistItems, productId]);
 
   const handleAddToCart = (id) => {
+    console.log("the item in card id is :",id);
+    
     dispatch(addToCart(id));
   };
 
@@ -81,7 +83,7 @@ export default function DetailsPage() {
         style={styles.addToCartButton}
         onPress={() => {
           handleAddToCart(product.id);
-          console.log("add to cart clicked", typeof product.id);
+          console.log("add to cart clicked",  product.id);
         }}
       >
         <Text style={styles.addToCartButtonText}>Add to Cart</Text>

@@ -1,5 +1,6 @@
 import {
   Image,
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -8,11 +9,14 @@ import {
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { clearCart, removeFromCart } from "../store/slices/cartSlice";
+import Button from "@/components/common/Button";
 
 export default function Cart() {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
   const totalAmount = useSelector((state) => state.cart.totalAmount);
+  
+  console.log('cartItems',cartItems.length);
 
   const handleRemoveItem = (id) => {
     dispatch(removeFromCart({ id }));
@@ -25,13 +29,13 @@ export default function Cart() {
   if (cartItems.length === 0) {
     return (
       <View style={styles.emptyCartContainer}>
-        <Text style={styles.emptyCartText}>{cartItems.length}</Text>
+        <Text style={styles.emptyCartText}>Your cart is Empty!</Text>
       </View>
     );
   }
 
-  return (
-    <ScrollView contentContainerStyle={styles.container}>
+  return (<SafeAreaView>
+     <ScrollView contentContainerStyle={styles.container}>
       {cartItems.map((item) => (
         <View key={item.id} style={styles.cartItem}>
           <Image source={{ uri: item.img }} style={styles.productImage} />
@@ -57,12 +61,17 @@ export default function Cart() {
           <Text style={styles.clearButtonText}>Clear Cart</Text>
         </TouchableOpacity>
       </View>
+      <Button title={"Checkout"}/>
     </ScrollView>
+
+  </SafeAreaView>
+   
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex:1,
     padding: 16,
     backgroundColor: "white",
   },
@@ -121,6 +130,7 @@ const styles = StyleSheet.create({
   cartSummary: {
     marginTop: 20,
     alignItems: "center",
+    marginBottom:10,
   },
   totalAmount: {
     fontSize: 18,

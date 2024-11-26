@@ -3,10 +3,11 @@ import React from "react";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Entypo from "@expo/vector-icons/Entypo";
 import { router } from "expo-router";
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 
 export default function Header() {
   return (
-    <View>
+    <View style={{flexDirection:"row",alignItems:"center",justifyContent:"space-between",paddingRight:25}}>
       <View
         style={{
           //   width: "100%",
@@ -14,6 +15,7 @@ export default function Header() {
           marginTop: 5,
           flexDirection: "row",
           justifyContent: "space-between",
+          gap:85,
           alignItems: "center",
           marginHorizontal: 16,
           backgroundColor: "",
@@ -31,7 +33,13 @@ export default function Header() {
             source={require("../../assets/images/userImg.png")}
           />
         </TouchableOpacity>
+      
       </View>
+      <TouchableOpacity onPress={()=>{router.push('/Cart')}}>
+        <FontAwesome6 name="cart-shopping" size={28} color="grey" />
+
+
+        </TouchableOpacity>
     </View>
   );
 }

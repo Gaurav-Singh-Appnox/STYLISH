@@ -4,7 +4,15 @@ import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { router } from "expo-router";
+import { useDispatch } from "react-redux";
+import { logOut } from "@/store/slices/authSlice";
 const account = () => {
+  const dispatch = useDispatch();
+  const handleLogout = () =>{
+    dispatch(logOut());
+    router.push('/auth/login')
+
+  }
 
   const handleEdit = () =>{
     router.push('/profile')
@@ -105,7 +113,49 @@ const account = () => {
           }}
         >
           <Ionicons name="settings-outline" size={24} color="black" />
-          <Text style={styles.sectionHeading}>Profile Settings</Text>
+          <Text style={styles.sectionHeading}>Additional Settings</Text>
+        </View>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
+          <Text style={styles.profileText}>Theme</Text>
+          <Text style={{color:"grey",fontSize:14}}>Dark</Text>
+
+        </View>
+        <View  style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}>
+        <Text style={styles.profileText}>Using Since</Text>
+        <Text style={{color:"grey",fontSize:14}}>4sept2012</Text>
+
+        </View>
+        <View>
+          <Text style={styles.profileText}>
+          Help and support
+          </Text>
+        </View>
+        <TouchableOpacity onPress={handleLogout}>
+       
+        </TouchableOpacity>
+        
+
+      </View>
+      <View style={styles.appSettings}>
+        <View
+          style={{
+            flexDirection: "row",
+            padding: 20,
+            gap: 20,
+            // justifyContent: "",
+            alignItems: "center",
+          }}
+        >
+          <Ionicons name="settings-outline" size={24} color="black" />
+          <Text style={styles.sectionHeading}>App Settings</Text>
         </View>
         <View
           style={{
@@ -125,7 +175,7 @@ const account = () => {
           Help and support
           </Text>
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleLogout}>
         <View>
           <Text style={[styles.profileText,{ color:"red",paddingLeft:20,marginBottom:20}]}>
           Logout

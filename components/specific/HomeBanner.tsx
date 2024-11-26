@@ -2,6 +2,10 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 
 export default function HomeBanner() {
+  const handlePress = () => {
+    
+
+  }
   return (
     <View style={styles.container}>
       <Image 
@@ -12,7 +16,7 @@ export default function HomeBanner() {
         <Text style={styles.discountText}>50-40% OFF</Text>
         <Text style={styles.subtitle}>Now in (product)</Text>
         <Text style={styles.subtitle}>All colours</Text>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity onPress={handlePress}  style={styles.button}>
           <Text style={styles.buttonText}>Shop Now</Text>
         </TouchableOpacity>
       </View>

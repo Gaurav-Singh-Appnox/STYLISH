@@ -1,3 +1,5 @@
+import HomeBanner from "@/components/specific/HomeBanner";
+import TimeBanner from "@/components/specific/TimeBanner";
 import { router } from "expo-router";
 import React from "react";
 import { Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -16,7 +18,8 @@ const wishlist = () => {
   };
   return (
     <SafeAreaView>
-      <ScrollView  contentContainerStyle={styles.scrollContainer}>
+        <TimeBanner heading={"Trending Products"} time={"Last Date 29/02/2022"} color={"#FD6E87"} />
+        <ScrollView  contentContainerStyle={styles.scrollContainer}>
         {wishlishItems.map((product:any) => (
           <TouchableOpacity
             key={product.id}
