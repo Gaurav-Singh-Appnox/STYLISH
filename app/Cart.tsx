@@ -1,6 +1,13 @@
-import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from "react-native";
-import { useSelector, useDispatch } from "react-redux";
-import { removeFromCart, clearCart } from "../store/slices/cartSlice";
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import { clearCart, removeFromCart } from "../store/slices/cartSlice";
 
 export default function Cart() {
   const dispatch = useDispatch();
@@ -31,7 +38,9 @@ export default function Cart() {
           <View style={styles.productDetails}>
             <Text style={styles.productName}>{item.name}</Text>
             <Text style={styles.productPrice}>${item.price.toFixed(2)}</Text>
-            <Text style={styles.productQuantity}>Quantity: {item.quantity}</Text>
+            <Text style={styles.productQuantity}>
+              Quantity: {item.quantity}
+            </Text>
           </View>
           <TouchableOpacity
             style={styles.removeButton}
@@ -127,7 +136,7 @@ const styles = StyleSheet.create({
   },
   clearButtonText: {
     color: "white",
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "bold",
   },
 });
