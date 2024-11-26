@@ -39,7 +39,7 @@ const loadWishlistFromStorage = async (): Promise<Product[]> => {
 
 const initialState = {
   data: productsData,
-  wishlistProducts: [] as Product[], // Updated to specify type
+  wishlistProducts: [] as Product[],
 };
 
 const productSlice = createSlice({
@@ -51,16 +51,13 @@ const productSlice = createSlice({
       const index = state.wishlistProducts.findIndex((item) => item.id === id);
 
       if (index !== -1) {
-        // Remove from wishlist
         state.wishlistProducts.splice(index, 1);
       } else {
-        // Add to wishlist
         const product = state.data.find((item) => item.id === id);
         if (product) {
           state.wishlistProducts.push(product);
         }
       }
-      // Save updated wishlist to AsyncStorage
       saveWishlistToStorage(state.wishlistProducts);
     },
 
