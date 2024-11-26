@@ -18,7 +18,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="wishlist"
         options={{
-          headerShown:false,
+          headerShown:true,
           title: "Wishlist",
           tabBarIcon: ({ color, size }) => (
             <FontAwesome name="heart" color={color} size={size} />

@@ -2,7 +2,7 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import ReadMore from "@fawazahmed/react-native-read-more";
 import { useLocalSearchParams } from "expo-router";
-import React from "react";
+import React, { useState } from "react";
 import {
   Image,
   ScrollView,
@@ -11,15 +11,29 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useSelector } from "react-redux";
+import Icon from "react-native-vector-icons/FontAwesome";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "../store/slices/cartSlice";
+import { updateWishlist } from "../store/slices/productSlice";
 
 export default function DetailsPage() {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const products = useSelector((state) => state.productSlice.data);
+  const wishlishItems = useSelector((state) => state.productSlice.wishlistProducts);
   const { id } = useLocalSearchParams();
   const productId = parseInt(id);
-
   const product = products.find((item) => item.id === productId);
+  const [isWishlist, setIsWishlist] = useState<boolean>(false);
+ 
+
+  const handleAddToCart = (id) => {
+    dispatch(addToCart(id));
+  };
+
+  const toggleWishlist =()=>{
+    setIsWishlist(prev=> !prev);
+    dispatch(updateWishlist(product.id))
+  }
 
   if (!product) {
     return (
@@ -31,7 +45,21 @@ export default function DetailsPage() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Image source={{ uri: product.img }} style={styles.productImage} />
+      <View style={styles.imgContainer}>
+        <Icon
+          name="heart"
+          size={30}
+          onPress = {()=> toggleWishlist()}
+          color = {`${isWishlist ? "red": "black"}`}
+          style={{
+            position: "absolute",
+            top: 10,
+            left:280,
+            zIndex: 10,
+          }}
+        />
+        <Image source={{ uri: product.img }} style={styles.productImage} />
+      </View>
       <Text style={styles.title}>{product.name}</Text>
       <Text style={styles.subtitle}>{product.description}</Text>
 
@@ -46,7 +74,8 @@ export default function DetailsPage() {
       <TouchableOpacity
         style={styles.addToCartButton}
         onPress={() => {
-          console.log("Added to Cart!");
+          handleAddToCart(product.id);
+          console.log("add to cart clicked", typeof product.id);
         }}
       >
         <Text style={styles.addToCartButtonText}>Add to Cart</Text>
@@ -81,6 +110,10 @@ const styles = StyleSheet.create({
   container: {
     padding: 16,
     backgroundColor: "white",
+  },
+  imgContainer: {
+    position: "relative",
+    // backgroundColor:"red"
   },
   errorText: {
     fontSize: 16,

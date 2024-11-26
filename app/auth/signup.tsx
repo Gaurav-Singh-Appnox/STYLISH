@@ -5,6 +5,7 @@ import { Image, StyleSheet, Text, View } from "react-native";
 import * as yup from "yup";
 import Button from "../../components/common/Button";
 import CustomInput from "../../components/common/CustomInput";
+import { useDispatch } from "react-redux";
 
 
 const signUpSchema = yup
