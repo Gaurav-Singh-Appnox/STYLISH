@@ -1,22 +1,196 @@
-import { View, Text, StyleSheet } from 'react-native'
-import React from 'react'
-
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import React from "react";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import Ionicons from "@expo/vector-icons/Ionicons";
 const account = () => {
   return (
     <View style={styles.container}>
-      <Text>account</Text>
+      <Text style={styles.mainHeading}>Settings</Text>
+
+      <View style={styles.profileSetting}>
+        <View
+          style={{
+            flexDirection: "row",
+            padding: 10,
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <View style={{ flexDirection: "row", gap: 20 }}>
+          
+            <FontAwesome5 name="user" size={20} color="black" />
+            <Text style={styles.sectionHeading}>Profile Settings</Text>
+          </View>
+          <TouchableOpacity>
+            <Text style={styles.settingText}>Edit</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+          <Text style={styles.profileText}>Full Name</Text>
+          <Text style={{ fontSize: 16 }}>Charles W. Abyte</Text>
+        </View>
+        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+          <Text style={styles.profileText}>Email</Text>
+          <Text style={{ fontSize: 16 }}>Charle.byte@gmail.com</Text>
+        </View>
+
+        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+          <Text style={styles.profileText}>Phone</Text>
+          <Text style={{ fontSize: 16 }}>+92 39312123123</Text>
+        </View>
+
+        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+          <Text style={styles.profileText}>Address</Text>
+          <Text style={{ fontSize: 16 }}>1850BigELm City Kansas</Text>
+        </View>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            paddingBottom: 10,
+          }}
+        >
+          <Text style={styles.profileText}>About</Text>
+          <Text style={{ fontSize: 16 }}>
+            Aliquto portofilio mornsish buthn
+          </Text>
+        </View>
+      </View>
+
+      <View style={styles.paymentSetting}>
+        <View
+          style={{
+            flexDirection: "row",
+            padding: 10,
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+             <View style={{ flexDirection: "row", gap: 20 }}>
+             <AntDesign name="creditcard" size={24} color="black" />
+             <Text style={styles.sectionHeading}>Payment Settings</Text>
+             </View>
+         
+          <TouchableOpacity>
+            <Text style={styles.settingText}>Edit</Text>
+          </TouchableOpacity>
+        </View>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            paddingBottom: 10,
+          }}
+        >
+          <Text style={styles.profileText}>Default Credit Card</Text>
+        </View>
+      </View>
+      <View style={styles.appSettings}>
+        <View
+          style={{
+            flexDirection: "row",
+            padding: 20,
+            gap: 20,
+            // justifyContent: "",
+            alignItems: "center",
+          }}
+        >
+          <Ionicons name="settings-outline" size={24} color="black" />
+          <Text style={styles.sectionHeading}>Profile Settings</Text>
+        </View>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            paddingBottom: 10,
+          }}
+        >
+          <Text style={styles.profileText}>Languages</Text>
+          <Text style={{color:"grey",fontSize:14}}>English</Text>
+
+        </View>
+        <View>
+        <Text style={styles.profileText}>Delivery Address</Text>
+        </View>
+        <View>
+          <Text style={styles.profileText}>
+          Help and support
+          </Text>
+        </View>
+        <TouchableOpacity>
+        <View>
+          <Text style={[styles.profileText,{ color:"red",paddingLeft:20,marginBottom:20}]}>
+          Logout
+          </Text>
+        </View>
+        </TouchableOpacity>
+        
+
+      </View>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: "#fff",
-      alignItems: "center",
-      justifyContent: "center",
-    },
-  });
-  
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    paddingHorizontal: 16,
+    paddingTop: 20,
+  },
+  mainHeading: {
+    fontSize: 32,
+    fontWeight: "bold",
+    color: "#0d9ddf",
+    marginBottom: 20,
+    textAlign: "center",
+  },
+  sectionHeading: {
+    fontSize: 20,
+    fontWeight: 500,
+    color: "#5B869B",
+  },
+  profileSetting: {
+    padding: 10,
+    borderRadius: 10,
+    elevation: 3,
+    width: "100%",
+    backgroundColor: "white",
+    gap: 20,
+    borderWidth: 0.2,
+  },
+  profileText: {
+    fontSize: 18,
+    fontWeight: 500,
+    color:"#346b82"
+  },
+  settingText: {
+    fontSize: 16,
+    fontWeight: 400,
+  },
 
-export default account
+  paymentSetting: {
+    marginTop: 25,
+    padding: 10,
+    borderRadius: 10,
+    elevation: 3,
+    width: "100%",
+    backgroundColor: "white",
+    gap: 20,
+    borderWidth: 0.2,
+  },
+  appSettings: {
+    marginTop: 25,
+    padding: 10,
+    borderRadius: 10,
+    elevation: 3,
+    width: "100%",
+    backgroundColor: "white",
+    gap: 20,
+    borderWidth: 0.2,
+  },
+});
+
+export default account;

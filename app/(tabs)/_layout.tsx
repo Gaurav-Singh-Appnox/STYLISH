@@ -18,6 +18,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="wishlist"
         options={{
+          headerShown:true,
           title: "Wishlist",
           tabBarIcon: ({ color, size }) => (
             <FontAwesome name="heart" color={color} size={size} />
@@ -27,13 +28,15 @@ export default function TabLayout() {
       <Tabs.Screen
         name="shop"
         options={{
+          headerShown:false,
+
           title: "Shop",
           tabBarIcon: ({ color, size }) => (
             <FontAwesome name="shopping-cart" color={color} size={size} />
           ),
         }}
       />
-      <Tabs.Screen
+      {/* <Tabs.Screen
         name="search"
         options={{
           title: "Search",
@@ -41,11 +44,12 @@ export default function TabLayout() {
             <FontAwesome name="search" color={color} size={size} />
           ),
         }}
-      />
+      /> */}
       <Tabs.Screen
         name="account"
         options={{
-          title: "Account",
+          title: "Settings",
+          headerShown:false,
           tabBarIcon: ({ color, size }) => (
             <FontAwesome name="user" color={color} size={size} />
           ),

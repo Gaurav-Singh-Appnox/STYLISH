@@ -1,22 +1,68 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 import { router } from "expo-router";
 import { useState } from "react";
-import {
-  Image,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import * as yup from "yup";
+import Button from "../../components/common/Button";
+import CustomInput from "../../components/common/CustomInput";
+import {useDispatch} from "react-redux"
+import { setUser } from "../../store/slices/authSlice";
+
+const loginSchema = yup
+  .object({
+    email: yup.string().email().required("Email is required."),
+    password: yup
+      .string()
+      .min(6, "Password must be at least 6 characters.")
+      .required("Password is required."),
+  })
+  .required();
+
+type ErrorState = {
+  [key: string]: string;
+} & {
+  api?: string;
+};
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState<ErrorState>({});
+  const dispatch = useDispatch();
 
   const handleLogin = async () => {
-    await AsyncStorage.setItem("user_token", "your_token_here");
-    router.replace("/initial-load");
+    try {
+      await loginSchema.validate({ email, password }, { abortEarly: false });
+      setErrors({});
+      const response = await axios.post(
+        "https://stylish-backend-exfz.onrender.com/api/v1/auth/login",
+        {
+          email,
+          password,
+        }
+      );
+      dispatch(setUser(response.data))
+      router.replace("/initial-load");
+    } catch (error) {
+      if (error instanceof yup.ValidationError) {
+        const validationErrors: ErrorState = {};
+        error.inner.forEach((err) => {
+          if (err.path) {
+            validationErrors[err.path] = err.message;
+          }
+        });
+        setErrors(validationErrors);
+      } else if (axios.isAxiosError(error)) {
+        if (error.response?.status === 401) {
+          setErrors({ api: "Invalid email or password." });
+        } else {
+          setErrors({ api: "Failed to login. Please try again later." });
+        }
+      } else {
+        setErrors({ api: "An unexpected error occurred." });
+      }
+    }
   };
 
   const handleForgotPassword = () => {
@@ -29,23 +75,31 @@ export default function Login() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.loginWelcomeText}>Welcome Back!</Text>
-      <TextInput
-        value={email}
-        onChangeText={setEmail}
-        placeholder="Email"
-        style={styles.input}
-      />
-      <TextInput
-        value={password}
-        onChangeText={setPassword}
-        placeholder="Password"
-        secureTextEntry
-        style={styles.input}
-      />
-      <TouchableOpacity onPress={handleLogin} style={styles.loginButton}>
-        <Text style={styles.loginButtonText}>Login</Text>
-      </TouchableOpacity>
+      <Text style={styles.loginWelcomeText}>Welcome {"\n"}Back!</Text>
+      <View style={styles.inputContainer}>
+        <CustomInput
+          value={email}
+          onChangeText={setEmail}
+          placeholder="Email"
+          leftIcon="envelope"
+        />
+        {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
+
+        <CustomInput
+          value={password}
+          onChangeText={setPassword}
+          placeholder="Password"
+          secureTextEntry
+          leftIcon="lock"
+        />
+        {errors.password && (
+          <Text style={styles.errorText}>{errors.password}</Text>
+        )}
+      </View>
+      <View style={styles.btnContainer}>
+        <Button title={"Login"} onPress={handleLogin} />
+        {errors.api && <Text style={styles.errorText}>{errors.api}</Text>}
+      </View>
       <TouchableOpacity onPress={handleForgotPassword}>
         <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
       </TouchableOpacity>
@@ -64,16 +118,13 @@ export default function Login() {
           </View>
         </View>
         <View style={styles.accountExistText}>
-        <Text style={styles.accountExistMessage}>
-          Don't have an account?{" "}
-          <Text
-            style={styles.accountExistLink}
-            onPress={handleSignup}
-          >
-            Sign Up
+          <Text style={styles.accountExistMessage}>
+            Don't have an account?{" "}
+            <Text style={styles.accountExistLink} onPress={handleSignup}>
+              Sign Up
+            </Text>
           </Text>
-        </Text>
-      </View>
+        </View>
       </View>
     </View>
   );
@@ -90,30 +141,12 @@ const styles = StyleSheet.create({
     fontSize: 36,
     fontWeight: "700",
     lineHeight: 43,
-    marginBottom:36
-  },
-  input: {
-    marginVertical: 8,
-    padding: 12,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 8,
-  },
-  loginButton: {
-    backgroundColor: "#F83758",
-    padding: 12,
-    borderRadius: 8,
-    marginVertical: 12,
-  },
-  loginButtonText: {
-    color: "white",
-    textAlign: "center",
-    fontWeight: "700",
+    marginBottom: 36,
   },
   forgotPasswordText: {
     textAlign: "right",
-    color: "#575757",
-    // marginVertical: ,
+    color: "#F83758",
+    marginTop: 9,
   },
   continueText: {
     textAlign: "center",
@@ -121,18 +154,21 @@ const styles = StyleSheet.create({
     color: "#575757",
     fontWeight: "500",
   },
+  errorText: {
+    color: "red",
+    fontSize: 12,
+    marginTop: 4,
+  },
   socialLogin: {
     flexDirection: "column",
     alignItems: "center",
-    marginTop:52,
-    // backgroundColor:"red"
+    marginTop: 52,
   },
   socialLoginIcons: {
     flexDirection: "row",
     justifyContent: "center",
     gap: 10,
     marginTop: 20,
-    // marginBottom: 30,
   },
   loginIcon: {
     height: 54,
@@ -149,10 +185,18 @@ const styles = StyleSheet.create({
   accountExistMessage: {
     fontSize: 14,
     color: "#575757",
+    fontWeight: "600",
   },
   accountExistLink: {
     color: "#F83758",
     fontWeight: "bold",
     textDecorationLine: "underline",
+  },
+  inputContainer: {
+    flexDirection: "column",
+    gap: 31,
+  },
+  btnContainer: {
+    marginTop: 52,
   },
 });

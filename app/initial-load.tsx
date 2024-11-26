@@ -1,18 +1,11 @@
-import { router } from "expo-router";
-import { useEffect } from "react";
 import {
-  ActivityIndicator,
-  Image,
-  ImageBackground,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
-import {
-  useFonts,
   LibreCaslonText_400Regular,
   LibreCaslonText_700Bold,
+  useFonts,
 } from "@expo-google-fonts/libre-caslon-text";
+import { router } from "expo-router";
+import { useEffect } from "react";
+import { ImageBackground, StyleSheet, Text, View } from "react-native";
 
 export default function InitialLoad() {
   useEffect(() => {
@@ -37,17 +30,24 @@ export default function InitialLoad() {
         source={require("@/assets/images/clothes.png")}
       >
         <View>
-        <Text style={styles.heading}>Stylish</Text>
-        
+          <Text style={styles.heading}>Stylish</Text>
         </View>
-          
 
         <View style={styles.description}>
-          <Text style={styles.descriptionText}>         You Want!{" "} </Text>
-          <Text style={styles.descriptionText}>  Authentic ,Here  {" "} </Text>
-          <Text style={styles.descriptionText}>          you go!{" "} </Text>
+          <Text style={styles.descriptionText}> You Want! </Text>
+          <Text style={styles.descriptionText}> Authentic ,Here </Text>
+          <Text style={styles.descriptionText}> you go! </Text>
 
-          <Text style={{fontSize:18,color:"white",textAlign:"center",marginTop:10,}}>Find it here , buy it now!{" "}</Text>
+          <Text
+            style={{
+              fontSize: 18,
+              color: "white",
+              textAlign: "center",
+              marginTop: 10,
+            }}
+          >
+            Find it here , buy it now!{" "}
+          </Text>
         </View>
       </ImageBackground>
     </View>
@@ -58,34 +58,28 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     // flexDirection: "row",
-    
   },
   backgroundImage: {
     flex: 1,
     resizeMode: "cover",
-    justifyContent:"center",
-    gap:'50%',
-    alignItems:"center",
-   
-
+    justifyContent: "center",
+    gap: "50%",
+    alignItems: "center",
   },
   heading: {
-
     fontFamily: "LibreCaslonText_700Bold",
     fontSize: 70,
     color: "#ffffff",
   },
   description: {
-
     color: "#ffffff",
-     borderRadius:20,
-     backgroundColor:""
-    
+    borderRadius: 20,
+    backgroundColor: "",
   },
   descriptionText: {
-    opacity:1,
+    opacity: 1,
     fontSize: 34,
-    fontWeight:"900",
+    fontWeight: "900",
     color: "white",
   },
 });
