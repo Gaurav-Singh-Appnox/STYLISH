@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { TouchableOpacity } from "react-native";
 import { Provider, useDispatch } from "react-redux";
 import { loadCartFromStorage, setCart } from "../store/slices/cartSlice";
+import { initializeWishlist } from "../store/slices/productSlice";
 import store from "../store/store";
 
 export default function RootLayout() {
@@ -32,7 +33,10 @@ export default function RootLayout() {
             headerTitle: "Cart",
           }}
         />
-        <Stack.Screen name="profile" options={{headerShown:true, headerTitle:"Profile"}}/>
+        <Stack.Screen
+          name="profile"
+          options={{ headerShown: true, headerTitle: "Profile" }}
+        />
       </Stack>
     </Provider>
   );
@@ -52,10 +56,12 @@ function CartIcon() {
   );
 }
 
-function CartInitializer() {
+function AppInitializer() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(initializeWishlist());
+
     const initializeCart = async () => {
       const savedCart = await loadCartFromStorage();
       dispatch(setCart(savedCart));
