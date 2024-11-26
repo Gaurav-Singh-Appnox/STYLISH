@@ -68,7 +68,6 @@ const productSlice = createSlice({
 });
 
 export const { updateWishlist, setWishlist } = productSlice.actions;
-
 export const initializeWishlist = () => async (dispatch) => {
   const wishlistFromStorage = await loadWishlistFromStorage();
   dispatch(setWishlist(wishlistFromStorage));

@@ -1,44 +1,51 @@
-import HomeBanner from "@/components/specific/HomeBanner";
 import TimeBanner from "@/components/specific/TimeBanner";
 import { router } from "expo-router";
 import React from "react";
-import { Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { useSelector } from "react-redux";
 
 const wishlist = () => {
   const wishlishItems = useSelector(
     (state) => state.productSlice.wishlistProducts
   );
-  console.log(wishlishItems[0]);
 
-  const handlePress = (id:number) => {
+  const handlePress = (id: number) => {
     console.log("the id is :", id);
-    router.push({pathname:'/detailsPage',params:{id}});
-
+    router.push({ pathname: "/detailsPage", params: { id } });
   };
   return (
     <SafeAreaView>
-        <TimeBanner heading={"Trending Products"} time={"Last Date 29/02/2022"} color={"#FD6E87"} />
-        <ScrollView  contentContainerStyle={styles.scrollContainer}>
-        {wishlishItems.map((product:any) => (
+      <TimeBanner
+        heading={"Trending Products"}
+        time={"Last Date 29/02/2022"}
+        color={"#FD6E87"}
+      />
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        {wishlishItems.map((product: any) => (
           <TouchableOpacity
             key={product.id}
             style={styles.card}
-            onPress={() => handlePress(product.id)} 
+            onPress={() => handlePress(product.id)}
           >
             <View>
               <Image style={styles.img} source={{ uri: product.img }} />
               <Text style={styles.heading}>{product.name}</Text>
-              {/* <Text style={styles.description}>{product.description}</Text> */}
               <Text style={styles.price}>${product.price.toFixed(2)}</Text>
-              {/* <Text style={styles.rating}>Rating: {product.rating} ★</Text> */}
             </View>
           </TouchableOpacity>
         ))}
       </ScrollView>
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   scrollContainer: {
@@ -85,4 +92,4 @@ const styles = StyleSheet.create({
     color: "#777",
   },
 });
-export default wishlist; 
+export default wishlist;

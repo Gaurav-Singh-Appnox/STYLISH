@@ -1,8 +1,8 @@
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { Stack, useRouter } from "expo-router";
 import { useEffect } from "react";
-import { TouchableOpacity } from "react-native";
-import { Provider, useDispatch } from "react-redux";
+import { Text, TouchableOpacity } from "react-native";
+import { Provider, useDispatch, useSelector } from "react-redux";
 import { loadCartFromStorage, setCart } from "../store/slices/cartSlice";
 import { initializeWishlist } from "../store/slices/productSlice";
 import store from "../store/store";
@@ -19,7 +19,9 @@ export default function RootLayout() {
         <Stack.Screen name="auth/reset-password" />
         <Stack.Screen name="initial-load" />
         <Stack.Screen name="(tabs)" />
-        <Stack.Screen name="detailsPage" options={{
+        <Stack.Screen
+          name="detailsPage"
+          options={{
             headerShown: true,
             headerTitle: "",
             headerRight: () => <CartIcon />,
@@ -42,6 +44,7 @@ export default function RootLayout() {
 }
 
 function CartIcon() {
+  const cartItems = useSelector((state) => state.cart.items);
   const router = useRouter();
   return (
     <TouchableOpacity
@@ -51,6 +54,7 @@ function CartIcon() {
       }}
     >
       <FontAwesome6 name="cart-shopping" size={24} color="black" />
+      <Text>{cartItems.length}</Text>
     </TouchableOpacity>
   );
 }
