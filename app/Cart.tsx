@@ -1,3 +1,4 @@
+import Button from "@/components/common/Button";
 import {
   Image,
   SafeAreaView,
@@ -9,14 +10,13 @@ import {
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { clearCart, removeFromCart } from "../store/slices/cartSlice";
-import Button from "@/components/common/Button";
 
 export default function Cart() {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
   const totalAmount = useSelector((state) => state.cart.totalAmount);
-  
-  console.log('cartItems',cartItems.length);
+
+  console.log("cartItems", cartItems.length);
 
   const handleRemoveItem = (id) => {
     dispatch(removeFromCart({ id }));
@@ -34,44 +34,47 @@ export default function Cart() {
     );
   }
 
-  return (<SafeAreaView>
-     <ScrollView contentContainerStyle={styles.container}>
-      {cartItems.map((item) => (
-        <View key={item.id} style={styles.cartItem}>
-          <Image source={{ uri: item.img }} style={styles.productImage} />
-          <View style={styles.productDetails}>
-            <Text style={styles.productName}>{item.name}</Text>
-            <Text style={styles.productPrice}>${item.price.toFixed(2)}</Text>
-            <Text style={styles.productQuantity}>
-              Quantity: {item.quantity}
-            </Text>
+  return (
+    <SafeAreaView>
+      <ScrollView contentContainerStyle={styles.container}>
+        {cartItems.map((item) => (
+          <View key={item.id} style={styles.cartItem}>
+            <Image source={{ uri: item.img }} style={styles.productImage} />
+            <View style={styles.productDetails}>
+              <Text style={styles.productName}>{item.name}</Text>
+              <Text style={styles.productPrice}>${item.price.toFixed(2)}</Text>
+              <Text style={styles.productQuantity}>
+                Quantity: {item.quantity}
+              </Text>
+            </View>
+            <TouchableOpacity
+              style={styles.removeButton}
+              onPress={() => handleRemoveItem(item.id)}
+            >
+              <Text style={styles.removeButtonText}>Remove</Text>
+            </TouchableOpacity>
           </View>
+        ))}
+
+        <View style={styles.cartSummary}>
+          <Text style={styles.totalAmount}>
+            Total: ${totalAmount.toFixed(2)}
+          </Text>
           <TouchableOpacity
-            style={styles.removeButton}
-            onPress={() => handleRemoveItem(item.id)}
+            style={styles.clearButton}
+            onPress={handleClearCart}
           >
-            <Text style={styles.removeButtonText}>Remove</Text>
+            <Text style={styles.clearButtonText}>Clear Cart</Text>
           </TouchableOpacity>
         </View>
-      ))}
-
-      <View style={styles.cartSummary}>
-        <Text style={styles.totalAmount}>Total: ${totalAmount.toFixed(2)}</Text>
-        <TouchableOpacity style={styles.clearButton} onPress={handleClearCart}>
-          <Text style={styles.clearButtonText}>Clear Cart</Text>
-        </TouchableOpacity>
-      </View>
-      <Button title={"Checkout"}/>
-    </ScrollView>
-
-  </SafeAreaView>
-   
+        <Button title={"Checkout"} />
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex:1,
     padding: 16,
     backgroundColor: "white",
   },
@@ -130,7 +133,7 @@ const styles = StyleSheet.create({
   cartSummary: {
     marginTop: 20,
     alignItems: "center",
-    marginBottom:10,
+    marginBottom: 10,
   },
   totalAmount: {
     fontSize: 18,
