@@ -34,6 +34,7 @@ export default function DetailsPage() {
     setIsWishlist(wished);
   }, [wishlistItems, productId]);
 
+
   const handleAddToCart = () => {
     dispatch(addToCart(productId));
   };

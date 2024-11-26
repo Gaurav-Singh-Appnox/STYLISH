@@ -8,6 +8,7 @@ import Button from "../../components/common/Button";
 import CustomInput from "../../components/common/CustomInput";
 import {useDispatch} from "react-redux"
 import { setUser } from "../../store/slices/authSlice";
+import { ActivityIndicator } from "react-native";
 
 const loginSchema = yup
   .object({
@@ -30,6 +31,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<ErrorState>({});
   const dispatch = useDispatch();
+  const [isLoding,setIsLoding]= useState(false);
 
   const handleLogin = async () => {
     try {
@@ -73,6 +75,9 @@ export default function Login() {
     router.push("/auth/signup");
   };
 
+  if(!isLoding){
+    <ActivityIndicator size={"large"} color={"blue"}/>
+  }
   return (
     <View style={styles.container}>
       <Text style={styles.loginWelcomeText}>Welcome {"\n"}Back!</Text>

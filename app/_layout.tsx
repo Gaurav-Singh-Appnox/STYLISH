@@ -19,9 +19,7 @@ export default function RootLayout() {
         <Stack.Screen name="auth/reset-password" />
         <Stack.Screen name="initial-load" />
         <Stack.Screen name="(tabs)" />
-        <Stack.Screen
-          name="detailsPage"
-          options={{
+        <Stack.Screen name="detailsPage" options={{
             headerShown: true,
             headerTitle: "",
             headerRight: () => <CartIcon />,
