@@ -32,6 +32,7 @@ export default function RootLayout() {
             headerTitle: "Cart",
           }}
         />
+        <Stack.Screen name="profile" options={{headerShown:true, headerTitle:"Profile"}}/>
       </Stack>
     </Provider>
   );
@@ -43,7 +44,7 @@ function CartIcon() {
     <TouchableOpacity
       onPress={() => {
         console.log("cart clicked");
-        router.push("/cart");
+        router.push("/Cart");
       }}
     >
       <FontAwesome6 name="cart-shopping" size={24} color="black" />

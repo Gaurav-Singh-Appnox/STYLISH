@@ -1,11 +1,17 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
 import React from "react";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { router } from "expo-router";
 const account = () => {
+
+  const handleEdit = () =>{
+    router.push('/profile')
+
+  }
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Text style={styles.mainHeading}>Settings</Text>
 
       <View style={styles.profileSetting}>
@@ -22,7 +28,7 @@ const account = () => {
             <FontAwesome5 name="user" size={20} color="black" />
             <Text style={styles.sectionHeading}>Profile Settings</Text>
           </View>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={handleEdit}>
             <Text style={styles.settingText}>Edit</Text>
           </TouchableOpacity>
         </View>
@@ -58,6 +64,7 @@ const account = () => {
           </Text>
         </View>
       </View>
+      
 
       <View style={styles.paymentSetting}>
         <View
@@ -104,7 +111,6 @@ const account = () => {
           style={{
             flexDirection: "row",
             justifyContent: "space-between",
-            paddingBottom: 10,
           }}
         >
           <Text style={styles.profileText}>Languages</Text>
@@ -129,7 +135,7 @@ const account = () => {
         
 
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
