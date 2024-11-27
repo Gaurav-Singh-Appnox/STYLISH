@@ -1,3 +1,7 @@
+import Button from "@/components/common/Button";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import EvilIcons from "@expo/vector-icons/EvilIcons";
+import { router } from "expo-router";
 import {
   Image,
   SafeAreaView,
@@ -9,10 +13,6 @@ import {
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { clearCart, removeFromCart } from "../store/slices/cartSlice";
-import Button from "@/components/common/Button";
-import { router } from "expo-router";
-import AntDesign from "@expo/vector-icons/AntDesign";
-import EvilIcons from "@expo/vector-icons/EvilIcons";
 
 export default function Cart() {
   const dispatch = useDispatch();

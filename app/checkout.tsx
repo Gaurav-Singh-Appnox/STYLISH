@@ -1,19 +1,17 @@
-import {
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import HorizontalLine from "@/components/common/HorizontalLine";
 import Button from "@/components/common/Button";
+import HorizontalLine from "@/components/common/HorizontalLine";
+import { useRouter } from "expo-router";
+import React from "react";
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import { useSelector } from "react-redux";
 
 export default function checkout() {
   const cartItems = useSelector((state) => state.cart.items);
   const totalAmount = useSelector((state) => state.cart.totalAmount);
+  const router = useRouter();
+  const handleProceedToPayment = () => {
+    router.push("/PaymentScreen");
+  };
 
   return (
     <ScrollView style={styles.container}>
@@ -59,10 +57,9 @@ export default function checkout() {
       </View>
       <HorizontalLine />
       <View style={{ paddingTop: 40 }}>
-        <Button title={"Procced to Payment"} />
+        <Button title={"Procced to Payment"} onPress={handleProceedToPayment} />
       </View>
     </ScrollView>
-
   );
 }
 
