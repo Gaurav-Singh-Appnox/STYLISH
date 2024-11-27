@@ -12,12 +12,13 @@ import { clearCart, removeFromCart } from "../store/slices/cartSlice";
 import Button from "@/components/common/Button";
 import { router } from "expo-router";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import EvilIcons from "@expo/vector-icons/EvilIcons";
 
 export default function Cart() {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
   const totalAmount = useSelector((state) => state.cart.totalAmount);
-  
+
   const handleCheckout = () => {
     router.push("/checkout");
   };
@@ -40,7 +41,13 @@ export default function Cart() {
   return (
     <SafeAreaView>
       <ScrollView contentContainerStyle={styles.container}>
-        <Text>Delivery Address:</Text>
+        <View style={{ flexDirection: "row", marginTop: 13 }}>
+          <EvilIcons name="location" size={20} color="black" />
+          <Text style={{ fontSize: 14, fontWeight: 500 }}>
+            Delivery Address:
+          </Text>
+        </View>
+
         <View style={styles.delivery}>
           <View style={styles.addressText}>
             <Text>Address:</Text>
@@ -62,7 +69,7 @@ export default function Cart() {
               <Text style={styles.productName}>{item.name}</Text>
               <Text style={styles.productPrice}>${item.price.toFixed(2)}</Text>
               <Text style={styles.productQuantity}>
-                Quantity: {item.quantity}
+                Total Quantity: {item.quantity}
               </Text>
             </View>
             <TouchableOpacity
@@ -85,7 +92,7 @@ export default function Cart() {
             <Text style={styles.clearButtonText}>Clear Cart</Text>
           </TouchableOpacity>
         </View>
-        <Button onPress={handleCheckout} title={"Proceed to Payment"} />
+        <Button onPress={handleCheckout} title={"Checkout"} />
       </ScrollView>
     </SafeAreaView>
   );
@@ -93,7 +100,7 @@ export default function Cart() {
 
 const styles = StyleSheet.create({
   container: {
-   paddingHorizontal:16,
+    paddingHorizontal: 16,
     backgroundColor: "white",
   },
   delivery: {
@@ -104,8 +111,7 @@ const styles = StyleSheet.create({
     gap: "10",
   },
   newAddress: {
-    
-    elevation:3,
+    elevation: 3,
     width: "20%",
     backgroundColor: "",
     justifyContent: "center",
@@ -130,6 +136,7 @@ const styles = StyleSheet.create({
     color: "#888",
   },
   cartItem: {
+    paddingVertical: 20,
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 16,
@@ -138,8 +145,9 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
   },
   productImage: {
-    width: 80,
-    height: 80,
+    borderRadius: 10,
+    width: 120,
+    height: 125,
     resizeMode: "contain",
     marginRight: 16,
   },
@@ -163,7 +171,7 @@ const styles = StyleSheet.create({
   removeButton: {
     backgroundColor: "#F83758",
     paddingVertical: 6,
-    paddingHorizontal: 12,
+    paddingHorizontal: 10,
     borderRadius: 8,
     alignItems: "center",
   },
