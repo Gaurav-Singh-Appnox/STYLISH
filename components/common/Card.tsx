@@ -70,6 +70,7 @@ export default function Card() {
       horizontal
       showsHorizontalScrollIndicator={false}
       contentContainerStyle={styles.scrollContainer}
+      
     >
       {data.map((item) => (
         <TouchableOpacity key={item.id} onPress={() => handlePress(item.id)}>

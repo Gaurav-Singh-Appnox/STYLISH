@@ -46,7 +46,13 @@ export default function RootLayout() {
           name="PaymentScreen"
           options={{ headerShown: true, headerTitle: "Confirm Payment" }}
         />
+        <Stack.Screen
+          name="searchPage"
+          options={{ headerShown: true, headerTitle: "search page" }}
+        />
+
       </Stack>
+
     </Provider>
   );
 }
