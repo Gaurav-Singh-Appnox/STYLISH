@@ -113,17 +113,23 @@ const styles = StyleSheet.create({
   newAddress: {
     elevation: 3,
     width: "20%",
-    backgroundColor: "",
     justifyContent: "center",
     alignItems: "center",
+    shadowColor: "grey",
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 1,
+    shadowRadius: 3,
   },
   addressText: {
     paddingHorizontal: 20,
     paddingVertical: 10,
-    elevation: 10,
+    elevation: 3,
     width: "70%",
-    backgroundColor: "",
     fontSize: 10,
+    shadowColor: "grey",
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
   },
 
   emptyCartContainer: {
