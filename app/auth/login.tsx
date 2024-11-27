@@ -1,14 +1,19 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { router } from "expo-router";
 import { useState } from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { useDispatch } from "react-redux";
 import * as yup from "yup";
 import Button from "../../components/common/Button";
 import CustomInput from "../../components/common/CustomInput";
-import {useDispatch} from "react-redux"
 import { setUser } from "../../store/slices/authSlice";
-import { ActivityIndicator } from "react-native";
 
 const loginSchema = yup
   .object({
@@ -31,10 +36,11 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<ErrorState>({});
   const dispatch = useDispatch();
-  const [isLoding,setIsLoding]= useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = async () => {
     try {
+      setIsLoading(true);
       await loginSchema.validate({ email, password }, { abortEarly: false });
       setErrors({});
       const response = await axios.post(
@@ -44,11 +50,12 @@ export default function Login() {
           password,
         }
       );
-      dispatch(setUser(response.data))
+      dispatch(setUser(response.data));
       router.replace("/initial-load");
     } catch (error) {
       if (error instanceof yup.ValidationError) {
         const validationErrors: ErrorState = {};
+
         error.inner.forEach((err) => {
           if (err.path) {
             validationErrors[err.path] = err.message;
@@ -64,6 +71,8 @@ export default function Login() {
       } else {
         setErrors({ api: "An unexpected error occurred." });
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -75,9 +84,10 @@ export default function Login() {
     router.push("/auth/signup");
   };
 
-  if(!isLoding){
-    <ActivityIndicator size={"large"} color={"blue"}/>
+  if (!isLoading) {
+    <ActivityIndicator size="large" color={"blue"} />;
   }
+
   return (
     <View style={styles.container}>
       <Text style={styles.loginWelcomeText}>Welcome {"\n"}Back!</Text>

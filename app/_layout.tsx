@@ -38,6 +38,14 @@ export default function RootLayout() {
           name="profile"
           options={{ headerShown: true, headerTitle: "Profile" }}
         />
+        <Stack.Screen
+          name="checkout"
+          options={{ headerShown: true, headerTitle: "Shopping Bag" }}
+        />
+        <Stack.Screen
+          name="payment"
+          options={{ headerShown: true, headerTitle: "Confirm Payment" }}
+        />
       </Stack>
     </Provider>
   );

@@ -1,4 +1,3 @@
-import Button from "@/components/common/Button";
 import {
   Image,
   SafeAreaView,
@@ -10,14 +9,18 @@ import {
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { clearCart, removeFromCart } from "../store/slices/cartSlice";
+import Button from "@/components/common/Button";
+import { router } from "expo-router";
+import AntDesign from "@expo/vector-icons/AntDesign";
 
 export default function Cart() {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
   const totalAmount = useSelector((state) => state.cart.totalAmount);
-
-  console.log("cartItems", cartItems.length);
-
+  
+  const handleCheckout = () => {
+    router.push("/checkout");
+  };
   const handleRemoveItem = (id) => {
     dispatch(removeFromCart({ id }));
   };
@@ -37,6 +40,21 @@ export default function Cart() {
   return (
     <SafeAreaView>
       <ScrollView contentContainerStyle={styles.container}>
+        <Text>Delivery Address:</Text>
+        <View style={styles.delivery}>
+          <View style={styles.addressText}>
+            <Text>Address:</Text>
+            <Text>216 St Paul's Rd, London N1 2LL, UK</Text>
+            <Text>Contact : +44-784232</Text>
+          </View>
+          <View style={styles.newAddress}>
+            <AntDesign name="pluscircleo" size={24} color="black" />
+          </View>
+        </View>
+
+        <Text style={{ paddingBottom: 10, fontWeight: 700, fontSize: 20 }}>
+          Shopping List
+        </Text>
         {cartItems.map((item) => (
           <View key={item.id} style={styles.cartItem}>
             <Image source={{ uri: item.img }} style={styles.productImage} />
@@ -67,7 +85,7 @@ export default function Cart() {
             <Text style={styles.clearButtonText}>Clear Cart</Text>
           </TouchableOpacity>
         </View>
-        <Button title={"Checkout"} />
+        <Button onPress={handleCheckout} title={"Proceed to Payment"} />
       </ScrollView>
     </SafeAreaView>
   );
@@ -75,9 +93,33 @@ export default function Cart() {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
+   paddingHorizontal:16,
     backgroundColor: "white",
   },
+  delivery: {
+    width: "100%",
+    flexDirection: "row",
+    backgroundColor: "",
+    paddingVertical: 30,
+    gap: "10",
+  },
+  newAddress: {
+    
+    elevation:3,
+    width: "20%",
+    backgroundColor: "",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  addressText: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    elevation: 3,
+    width: "70%",
+    backgroundColor: "",
+    fontSize: 10,
+  },
+
   emptyCartContainer: {
     justifyContent: "center",
     alignItems: "center",
