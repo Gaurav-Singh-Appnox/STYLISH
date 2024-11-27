@@ -43,7 +43,7 @@ export default function RootLayout() {
           options={{ headerShown: true, headerTitle: "Shopping Bag" }}
         />
         <Stack.Screen
-          name="payment"
+          name="PaymentScreen"
           options={{ headerShown: true, headerTitle: "Confirm Payment" }}
         />
       </Stack>
