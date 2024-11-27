@@ -10,7 +10,7 @@ export default function SearchBar() {
     setSearchItem("");
     console.log("-jj", searchItem);
     if (searchItem.trim()) {
-      router.push(`/shop?search=${encodeURIComponent(searchItem.trim())}`);
+      router.push(`/searchPage?search=${encodeURIComponent(searchItem.trim())}`);
     }
   };
   return (

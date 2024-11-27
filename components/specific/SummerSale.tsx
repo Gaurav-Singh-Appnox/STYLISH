@@ -1,5 +1,6 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
+import { router } from "expo-router";
 
 export default function SummerSale() {
   return (
@@ -14,7 +15,7 @@ export default function SummerSale() {
         <Text style={{fontSize:16,}}>Summers's 25 Collections</Text>
         </View>
         <View style={{justifyContent:"center"}}>
-        <TouchableOpacity style={styles.btn}>
+        <TouchableOpacity onPress={()=>router.push('/(tabs)/shop')} style={styles.btn}>
           <Text style={styles.btnText}>View All</Text>
         </TouchableOpacity>
         </View>

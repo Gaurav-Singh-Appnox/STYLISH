@@ -115,6 +115,7 @@ export default function profile() {
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 16,
+    backgroundColor:"white"
   },
   imgDiv: {
     marginTop:10,
