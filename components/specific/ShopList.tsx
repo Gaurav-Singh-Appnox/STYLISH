@@ -1,4 +1,4 @@
-import { router } from "expo-router";
+import { useRouter } from "expo-router";
 import React from "react";
 import {
   Image,
@@ -11,15 +11,22 @@ import {
 } from "react-native";
 import { useSelector } from "react-redux";
 
-export default function ShopList() {
+export default function ShopList({ searchItem = "" }) {
+  const router = useRouter();
   const data = useSelector((state) => state.productSlice.data);
+  const filteredData = searchItem.trim()
+    ? data.filter((item) =>
+        item.category.toLowerCase().includes(searchItem.toLowerCase())
+      )
+    : data;
+
   const handlePress = (id: number) => {
     router.push({ pathname: "/detailsPage", params: { id } });
   };
   return (
     <SafeAreaView>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {data.map((product) => (
+        {filteredData.map((product) => (
           <TouchableOpacity
             key={product.id}
             style={styles.card}
