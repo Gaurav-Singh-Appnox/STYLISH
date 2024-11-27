@@ -11,9 +11,11 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 const account = () => {
   const dispatch = useDispatch();
+  const userData = useSelector((state) => state.auth.user);
+  console.log("userData -->", userData);
   const handleLogout = () => {
     dispatch(logOut());
     router.replace("/auth/login");
@@ -46,7 +48,7 @@ const account = () => {
 
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <Text style={styles.profileText}>Full Name</Text>
-          <Text style={{ fontSize: 16 }}>Charles W. Abyte</Text>
+          <Text style={{ fontSize: 16 }}>{userData}</Text>
         </View>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <Text style={styles.profileText}>Email</Text>

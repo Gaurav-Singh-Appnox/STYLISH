@@ -39,7 +39,7 @@ export default function checkout() {
 
         <View style={styles.paymentText}>
           <Text style={styles.innerText}>Order Amount</Text>
-          <Text style={{}}>${totalAmount}</Text>
+          <Text style={{}}>${totalAmount.toFixed(2)}</Text>
         </View>
         <View style={styles.paymentText}>
           <Text style={styles.innerText}>Convinience</Text>
@@ -53,7 +53,7 @@ export default function checkout() {
       <HorizontalLine />
       <View style={[styles.paymentText, { paddingHorizontal: 10 }]}>
         <Text style={styles.heading}>Order Total </Text>
-        <Text style={styles.heading}>$ {totalAmount}</Text>
+        <Text style={styles.heading}>$ {totalAmount.toFixed(2)}</Text>
       </View>
       <HorizontalLine />
       <View style={{ paddingTop: 40 }}>

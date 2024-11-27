@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
   addressText: {
     paddingHorizontal: 20,
     paddingVertical: 10,
-    elevation: 3,
+    elevation: 10,
     width: "70%",
     backgroundColor: "",
     fontSize: 10,

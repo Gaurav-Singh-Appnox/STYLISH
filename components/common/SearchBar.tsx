@@ -1,15 +1,27 @@
 import Feather from "@expo/vector-icons/Feather";
+import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { StyleSheet, TextInput, View } from "react-native";
 
 export default function SearchBar() {
-  const [search,setSearch]= useState('');
+  const [searchItem, setSearchItem] = useState("");
+  const router = useRouter();
+  const handleSearch = () => {
+    setSearchItem("");
+    console.log("-jj", searchItem);
+    if (searchItem.trim()) {
+      router.push(`/shop?search=${encodeURIComponent(searchItem.trim())}`);
+    }
+  };
   return (
     <View style={styles.searchContainer}>
       <View style={styles.searchBar}>
         <View style={styles.inputContainer}>
           <Feather name="search" size={24} color="grey" />
           <TextInput
+            value={searchItem}
+            onChangeText={setSearchItem}
+            onSubmitEditing={handleSearch}
             style={styles.inputText}
             placeholder="Search any Product"
           ></TextInput>
