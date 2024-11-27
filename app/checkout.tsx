@@ -62,6 +62,7 @@ export default function checkout() {
         <Button title={"Procced to Payment"} />
       </View>
     </ScrollView>
+
   );
 }
 
