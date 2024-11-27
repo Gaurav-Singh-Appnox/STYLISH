@@ -1,13 +1,13 @@
+import { router } from "expo-router";
+import React from "react";
 import {
-  ScrollView,
   Image,
+  ScrollView,
   StyleSheet,
   Text,
-  View,
   TouchableOpacity,
+  View,
 } from "react-native";
-import React from "react";
-import { router } from "expo-router";
 
 export default function CircleSlider() {
   return (
@@ -18,7 +18,6 @@ export default function CircleSlider() {
         contentContainerStyle={styles.circleSlider}
       >
         <TouchableOpacity onPress={() => router.push("/(tabs)/shop")}>
-          
           <View style={styles.card}>
             <Image
               source={require("../../assets/images/women.png")}
@@ -29,7 +28,6 @@ export default function CircleSlider() {
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => router.push("/(tabs)/shop")}>
-          
           <View style={styles.card}>
             <Image
               source={require("../../assets/images/mens.png")}
@@ -40,7 +38,6 @@ export default function CircleSlider() {
         </TouchableOpacity>
 
         <TouchableOpacity onPress={() => router.push("/(tabs)/shop")}>
-          
           <View style={styles.card}>
             <Image
               source={require("../../assets/images/fashion.png")}
@@ -96,8 +93,6 @@ export default function CircleSlider() {
 
 const styles = StyleSheet.create({
   mainContainer: {
-    backgroundColor: "",
-    width: "100%",
     height: 90,
     marginTop: 16,
   },
