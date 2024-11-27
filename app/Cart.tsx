@@ -18,7 +18,9 @@ export default function Cart() {
   const cartItems = useSelector((state) => state.cart.items);
   const totalAmount = useSelector((state) => state.cart.totalAmount);
   
-
+  const handleCheckout = () => {
+    router.push("/checkout");
+  };
   const handleRemoveItem = (id) => {
     dispatch(removeFromCart({ id }));
   };
