@@ -1,5 +1,5 @@
 import { useRouter } from "expo-router";
-import React from "react";
+import React, { useState } from "react";
 import {
   Image,
   SafeAreaView,
@@ -14,17 +14,55 @@ import { useSelector } from "react-redux";
 export default function ShopList({ searchItem = "" }) {
   const router = useRouter();
   const data = useSelector((state) => state.productSlice.data);
-  const filteredData = searchItem.trim()
-    ? data.filter((item) =>
-        item.category.toLowerCase().includes(searchItem.toLowerCase())
-      )
-    : data;
 
-  const handlePress = (id: number) => {
+  const [selectedCategory, setSelectedCategory] = useState("");
+
+  const filteredData = data.filter((item) => {
+    const matchesSearch = searchItem.trim()
+      ? item.name.toLowerCase().includes(searchItem.toLowerCase())
+      : true;
+    const matchesCategory = selectedCategory
+      ? item.category.toLowerCase() === selectedCategory.toLowerCase()
+      : true;
+    return matchesSearch && matchesCategory;
+  });
+
+  const handlePress = (id) => {
     router.push({ pathname: "/detailsPage", params: { id } });
   };
+
   return (
     <SafeAreaView>
+      <ScrollView
+        horizontal
+        contentContainerStyle={styles.categoryContainer}
+        showsHorizontalScrollIndicator={false}
+      >
+        {["All", "Shirt", "Hoodie", "Shoes", "Dress", "Jeans"].map(
+          (category) => (
+            <TouchableOpacity
+              key={category}
+              style={[
+                styles.categoryButton,
+                selectedCategory === category && styles.selectedCategoryButton,
+              ]}
+              onPress={() =>
+                setSelectedCategory(category === "All" ? "" : category)
+              }
+            >
+              <Text
+                style={[
+                  styles.categoryText,
+                  selectedCategory === category && styles.selectedCategoryText,
+                ]}
+              >
+                {category}
+              </Text>
+            </TouchableOpacity>
+          )
+        )}
+      </ScrollView>
+
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {filteredData.map((product) => (
           <TouchableOpacity
@@ -53,6 +91,31 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 8,
     marginTop: 16,
+  },
+  categoryContainer: {
+    flexDirection: "row",
+    marginTop: 16,
+    marginHorizontal: 8,
+  },
+  categoryButton: {
+    padding: 10,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: "#ddd",
+    backgroundColor: "#f9f9f9",
+    marginRight: 8,
+  },
+  selectedCategoryButton: {
+    backgroundColor: "#F83758",
+    borderColor: "#F83758",
+  },
+  categoryText: {
+    fontSize: 14,
+    color: "#555",
+  },
+  selectedCategoryText: {
+    color: "#fff",
+    fontWeight: "bold",
   },
   card: {
     width: "48%",
