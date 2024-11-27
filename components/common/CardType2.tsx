@@ -77,7 +77,6 @@ export default function CardType2() {
         {data.map((item)=>(
           <TouchableOpacity
           key={item.id}
-          style={styles.card}
           onPress={() => handlePress(item.id)}
         >
 

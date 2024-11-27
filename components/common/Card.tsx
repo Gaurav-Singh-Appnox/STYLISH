@@ -65,12 +65,13 @@ export default function Card() {
       horizontal 
       showsHorizontalScrollIndicator={false} 
       contentContainerStyle={styles.scrollContainer}
+      
     >
      
       {data.map((item)=>(
          <TouchableOpacity
          key={item.id}
-         style={styles.card}
+        //  style={styles.card}
          onPress={() => handlePress(item.id)}
        >
         <View key={item.id} style={styles.card}>
@@ -144,7 +145,7 @@ const styles = StyleSheet.create({
   },
   img: {
     width: '100%',
-    height: 120,
+    height: '50%',
     // borderRadius: 10,
     resizeMode: 'contain',
     marginBottom: 8,

@@ -10,7 +10,7 @@ export default function checkout() {
   const totalAmount = useSelector((state) => state.cart.totalAmount);
   const router = useRouter();
   const handleProceedToPayment = () => {
-    router.push("/PaymentScreen");
+    router.push("/paymentScreen");
   };
 
   return (
