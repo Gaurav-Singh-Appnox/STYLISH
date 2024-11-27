@@ -1,7 +1,7 @@
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { Stack, useRouter } from "expo-router";
 import { useEffect } from "react";
-import { Text, TouchableOpacity } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { loadCartFromStorage, setCart } from "../store/slices/cartSlice";
 import { initializeWishlist } from "../store/slices/productSlice";
@@ -61,8 +61,12 @@ function CartIcon() {
         router.push("/Cart");
       }}
     >
-      <FontAwesome6 name="cart-shopping" size={24} color="black" />
-      <Text>{cartItems.length}</Text>
+      <View style={{ position: "relative" }}>
+        <FontAwesome6 name="cart-shopping" size={24} color="black" />
+        <Text style={{ position: "absolute", top: -16, left: "50%" }}>
+          {cartItems.length}
+        </Text>
+      </View>
     </TouchableOpacity>
   );
 }
