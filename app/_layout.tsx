@@ -73,9 +73,12 @@ function CartIcon() {
 
 function AppInitializer() {
   const dispatch = useDispatch();
-  useEffect(() => {
+  useEffect(async () => {
     dispatch(initializeWishlist());
-
+    const userData = await loadUserDataFromLocalStorage();
+    if (userData) {
+      dispatch(setUserDataFromLocalStorage(userData));
+    }
     const initializeCart = async () => {
       const savedCart = await loadCartFromStorage();
       dispatch(setCart(savedCart));
