@@ -4,6 +4,7 @@ import Header from "@/components/common/Header";
 import SearchBar from "@/components/common/SearchBar";
 import CircleSlider from "@/components/specific/CircleSlider";
 import HomeBanner from "@/components/specific/HomeBanner";
+import ImageSlider from "@/components/specific/ImageSlider";
 import SpecialOffer from "@/components/specific/SpecialOffer";
 import SummerSale from "@/components/specific/SummerSale";
 import TimeBanner from "@/components/specific/TimeBanner";
@@ -11,6 +12,7 @@ import React from "react";
 import { Image, SafeAreaView, ScrollView, StyleSheet } from "react-native";
 
 const home = () => {
+  const img = {};
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -18,6 +20,7 @@ const home = () => {
         <SearchBar />
         <CircleSlider />
         <HomeBanner />
+        <ImageSlider/>
         <TimeBanner
           heading={"Deal of the Day"}
           time={"22h 55m 20sec remaining"}
@@ -30,6 +33,7 @@ const home = () => {
           style={styles.img}
           source={require("../../assets/images/mac.png")}
         />
+
         <TimeBanner
           heading={"Trending Products"}
           time={"Last Date 29/02/2022"}

@@ -8,6 +8,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -22,12 +23,20 @@ export default function Cart() {
   const handleCheckout = () => {
     router.push("/checkout");
   };
+
   const handleRemoveItem = (id) => {
+    showToast("Item Removed");
     dispatch(removeFromCart({ id }));
   };
 
   const handleClearCart = () => {
+    showToast("Cart Cleared");
     dispatch(clearCart());
+  };
+
+  const showToast = (msg) => {
+    const value = msg;
+    ToastAndroid.show(`${value}`, ToastAndroid.SHORT);
   };
 
   if (cartItems.length === 0) {
@@ -39,11 +48,13 @@ export default function Cart() {
   }
 
   return (
-    <SafeAreaView>
-      <ScrollView contentContainerStyle={styles.container}>
+    <SafeAreaView style={styles.safeArea}>
+      <ScrollView
+        contentContainerStyle={[styles.container, { paddingBottom: 80 }]}
+      >
         <View style={{ flexDirection: "row", marginTop: 13 }}>
           <EvilIcons name="location" size={20} color="black" />
-          <Text style={{ fontSize: 14, fontWeight: 500 }}>
+          <Text style={{ fontSize: 14, fontWeight: "500" }}>
             Delivery Address:
           </Text>
         </View>
@@ -52,16 +63,23 @@ export default function Cart() {
           <View style={styles.addressText}>
             <Text>Address:</Text>
             <Text>216 St Paul's Rd, London N1 2LL, UK</Text>
-            <Text>Contact : +44-784232</Text>
+            <Text>Contact: +44-784232</Text>
           </View>
           <View style={styles.newAddress}>
             <AntDesign name="pluscircleo" size={24} color="black" />
           </View>
         </View>
 
-        <Text style={{ paddingBottom: 10, fontWeight: 700, fontSize: 20 }}>
-          Shopping List
-        </Text>
+        <View style={styles.headerRow}>
+          <Text style={styles.headerText}>Shopping List</Text>
+          <TouchableOpacity
+            style={styles.clearButton}
+            onPress={handleClearCart}
+          >
+            <Text style={styles.clearButtonText}>Clear Cart</Text>
+          </TouchableOpacity>
+        </View>
+
         {cartItems.map((item) => (
           <View key={item.id} style={styles.cartItem}>
             <Image source={{ uri: item.img }} style={styles.productImage} />
@@ -80,35 +98,43 @@ export default function Cart() {
             </TouchableOpacity>
           </View>
         ))}
+      </ScrollView>
 
+      <View style={styles.stickyTabBar}>
         <View style={styles.cartSummary}>
           <Text style={styles.totalAmount}>
             Total: ${totalAmount.toFixed(2)}
           </Text>
-          <TouchableOpacity
-            style={styles.clearButton}
-            onPress={handleClearCart}
-          >
-            <Text style={styles.clearButtonText}>Clear Cart</Text>
-          </TouchableOpacity>
         </View>
-        <Button onPress={handleCheckout} title={"Checkout"} />
-      </ScrollView>
+        
+        <View style={{ width:"50%"}}>
+  <Button onPress={handleCheckout} title={"Checkout"} />
+</View>
+        
+      </View>
+     
+
+      
     </SafeAreaView>
+    
   );
 }
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: "white",
+  },
   container: {
     paddingHorizontal: 16,
     backgroundColor: "white",
   },
+
   delivery: {
     width: "100%",
     flexDirection: "row",
-    backgroundColor: "",
     paddingVertical: 30,
-    gap: "10",
+    gap: 10,
   },
   newAddress: {
     elevation: 3,
@@ -131,7 +157,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 3,
   },
-
   emptyCartContainer: {
     justifyContent: "center",
     alignItems: "center",
@@ -140,6 +165,26 @@ const styles = StyleSheet.create({
   emptyCartText: {
     fontSize: 18,
     color: "#888",
+  },
+  headerRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingHorizontal: 16,
+  },
+  headerText: {
+    fontWeight: "700",
+    fontSize: 20,
+  },
+  clearButton: {
+    backgroundColor: "#F83758",
+    paddingVertical: 8,
+    paddingHorizontal: 10,
+    borderRadius: 10,
+  },
+  clearButtonText: {
+    color: "white",
+    fontSize: 18,
+    fontWeight: "bold",
   },
   cartItem: {
     paddingVertical: 20,
@@ -181,31 +226,32 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: "center",
   },
+  stickyTabBar: {
+    flexDirection: "row",
+    position: "absolute",
+    justifyContent:"space-evenly",
+    bottom: 0,
+    width: "100%",
+    backgroundColor: "white",
+    paddingVertical: 16,
+    // paddingHorizontal: 16,
+    borderTopWidth: 1,
+    borderTopColor: "#ddd",
+    alignItems: "center",
+  },
   removeButtonText: {
     color: "white",
     fontSize: 14,
     fontWeight: "bold",
   },
   cartSummary: {
-    marginTop: 20,
     alignItems: "center",
     marginBottom: 10,
+    backgroundColor:""
   },
   totalAmount: {
     fontSize: 18,
     fontWeight: "bold",
     color: "#333",
-    marginBottom: 10,
-  },
-  clearButton: {
-    backgroundColor: "#F83758",
-    paddingVertical: 10,
-    paddingHorizontal: 40,
-    borderRadius: 10,
-  },
-  clearButtonText: {
-    color: "white",
-    fontSize: 18,
-    fontWeight: "bold",
   },
 });

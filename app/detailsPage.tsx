@@ -8,6 +8,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -34,14 +35,28 @@ export default function DetailsPage() {
     setIsWishlist(wished);
   }, [wishlistItems, productId]);
 
+  const showToast = () => {
+    ToastAndroid.show('item added succesfully', ToastAndroid.SHORT);
+  };
+  const showToastWishlist =()=>{
+    if(isWishlist == undefined){
+    ToastAndroid.show('Added to wishlist',ToastAndroid.SHORT);}
+    else{
+      ToastAndroid.show('Removed to wishlist',ToastAndroid.SHORT);}
+
+    
+
+  }
 
   const handleAddToCart = (id) => {
-    console.log("the item in card id is :",id);
-    
+    showToast();
+    console.log("item in card id is :",id);
     dispatch(addToCart(id));
   };
 
+
   const toggleWishlist = () => {
+    showToastWishlist();
     setIsWishlist((prev) => !prev);
     dispatch(updateWishlist(product.id));
   };
@@ -53,6 +68,7 @@ export default function DetailsPage() {
       </View>
     );
   }
+
 
   return (
     <ScrollView contentContainerStyle={styles.container}>

@@ -78,7 +78,7 @@ const account = () => {
         </View>
       </View>
 
-      <View style={styles.paymentSetting}>
+      {/* <View style={styles.paymentSetting}>
         <View
           style={{
             flexDirection: "row",
@@ -105,7 +105,8 @@ const account = () => {
         >
           <Text style={styles.profileText}>Default Credit Card</Text>
         </View>
-      </View>
+      </View> */}
+
       <View style={styles.appSettings}>
         <View
           style={{
@@ -209,7 +210,7 @@ const styles = StyleSheet.create({
   profileSetting: {
     padding: 10,
     borderRadius: 10,
-    elevation: 3,
+    // elevation: 3,
     width: "100%",
     backgroundColor: "white",
     gap: 20,
@@ -229,7 +230,7 @@ const styles = StyleSheet.create({
     marginTop: 25,
     padding: 10,
     borderRadius: 10,
-    elevation: 3,
+    // elevation: 3,
     width: "100%",
     backgroundColor: "white",
     gap: 20,
@@ -239,10 +240,11 @@ const styles = StyleSheet.create({
     marginTop: 25,
     padding: 10,
     borderRadius: 10,
-    elevation: 3,
+    // elevation: 3,
     width: "100%",
     backgroundColor: "white",
     gap: 20,
+    
     borderWidth: 0.2,
   },
 });
