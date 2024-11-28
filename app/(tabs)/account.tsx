@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 const account = () => {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth.user);
-   const handleLogout = () => {
+  const handleLogout = () => {
     dispatch(logOut());
     router.replace("/auth/login");
   };
@@ -47,19 +47,12 @@ const account = () => {
 
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <Text style={styles.profileText}>Full Name</Text>
-<<<<<<< HEAD
+
           <Text style={{ fontSize: 16 }}>{userData?.name || "user"}</Text>
         </View>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <Text style={styles.profileText}>Email</Text>
           <Text style={{ fontSize: 16 }}>{userData?.email}</Text>
-=======
-          <Text style={{ fontSize: 16 }}>mk</Text>
-        </View>
-        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-          <Text style={styles.profileText}>Email</Text>
-          <Text style={{ fontSize: 16 }}>mk@gmail.com</Text>
->>>>>>> a29533c95cb4c935452bd0c615161c1251be5002
         </View>
 
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
