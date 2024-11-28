@@ -47,11 +47,13 @@ const account = () => {
 
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <Text style={styles.profileText}>Full Name</Text>
-          <Text style={{ fontSize: 16 }}>mk</Text>
+
+          <Text style={{ fontSize: 16 }}>{userData?.name || "user"}</Text>
         </View>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <Text style={styles.profileText}>Email</Text>
-          <Text style={{ fontSize: 16 }}>mk@gmail.com</Text>
+          <Text style={{ fontSize: 16 }}>{userData?.email}</Text>
+
         </View>
 
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>

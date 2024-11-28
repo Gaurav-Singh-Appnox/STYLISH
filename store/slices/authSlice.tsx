@@ -1,6 +1,16 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createSlice } from "@reduxjs/toolkit";
 
+const loadUserDataFromLocalStorage = async () => {
+  try {
+    const user = await AsyncStorage.getItem("user");
+    return user ? JSON.parse(user) : null;
+  } catch (error) {
+    console.error("faild to load user Data from local", error);
+    return null;
+  }
+};
+
 const authSlice = createSlice({
   name: "auth",
   initialState: {
@@ -20,8 +30,17 @@ const authSlice = createSlice({
       AsyncStorage.removeItem("user_token");
       AsyncStorage.removeItem("user");
     },
+    setUserDataFromLoaclStorage: (state, action) => {
+      state.user = action.payload;
+    },
   },
 });
 
-export const { setUser, logOut } = authSlice.actions;
+export const intializeUser = async (dispatch) => {
+  const userData = await loadUserDataFromLocalStorage();
+  dispatch(setUserDataFromLoaclStorage(userData));
+};
+
+export const { setUser, logOut, setUserDataFromLoaclStorage } =
+  authSlice.actions;
 export default authSlice.reducer;
