@@ -57,7 +57,7 @@ export default function checkout() {
       </View>
       <HorizontalLine />
       <View style={{ paddingTop: 40 }}>
-        <Button title={"Procced to Payment"} onPress={handleProceedToPayment} />
+        <Button title={"Proceed to Payment"} onPress={handleProceedToPayment} />
       </View>
     </ScrollView>
   );
