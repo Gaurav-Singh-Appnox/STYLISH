@@ -6,14 +6,13 @@ import React from "react";
 import { SafeAreaView, ScrollView, StyleSheet } from "react-native";
 
 const shop = () => {
-  const { search } = useLocalSearchParams();
-  console.log(typeof search);
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
         <Header />
         <SearchBar />
-        <ShopList searchItem={search} />
+       <ShopList/>
       </ScrollView>
     </SafeAreaView>
   );
