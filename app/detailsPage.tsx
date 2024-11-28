@@ -14,13 +14,13 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../store/slices/cartSlice";
-import { updateWishlist } from "../store/slices/productSlice";
+import { updateWishlist } from "../store/slices/wishlistSlice";
 
 export default function DetailsPage() {
   const dispatch = useDispatch();
-  const products = useSelector((state) => state.productSlice.data);
+  const products = useSelector((state) => state.wishlistSlice.data);
   const wishlistItems = useSelector(
-    (state) => state.productSlice.wishlistProducts
+    (state) => state.wishlistSlice?.wishlistProducts
   );
   const { id } = useLocalSearchParams();
 
@@ -34,10 +34,9 @@ export default function DetailsPage() {
     setIsWishlist(wished);
   }, [wishlistItems, productId]);
 
-
   const handleAddToCart = (id) => {
-    console.log("the item in card id is :",id);
-    
+    console.log("the item in card id is :", id);
+
     dispatch(addToCart(id));
   };
 
@@ -85,10 +84,8 @@ export default function DetailsPage() {
       <TouchableOpacity
         style={styles.addToCartButton}
         onPress={() => {
-
           handleAddToCart(product.id);
-          console.log("add to cart clicked",  product.id);
-
+          console.log("add to cart clicked", product.id);
         }}
       >
         <Text style={styles.addToCartButtonText}>Add to Cart</Text>

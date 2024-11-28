@@ -14,7 +14,7 @@ import { useSelector } from "react-redux";
 
 const wishlist = () => {
   const wishlishItems = useSelector(
-    (state) => state.productSlice.wishlistProducts
+    (state) => state.wishlistSlice.wishlistProducts
   );
 
   const handlePress = (id: number) => {
