@@ -22,10 +22,6 @@ export default function checkout() {
             <View style={styles.productDetails}>
               <Text style={styles.productName}>{item.name}</Text>
               <Text style={styles.description}>{item.description}</Text>
-              {/* <Text style={styles.productPrice}>${item.price.toFixed(2)}</Text> */}
-              {/* <Text style={styles.productQuantity}>
-                Total Quantity: {item.quantity}
-              </Text> */}
               <Text style={styles.delivery}>
                 Devlivery by <Text style={{ fontWeight: 500 }}>10May20XX</Text>{" "}
               </Text>

@@ -13,7 +13,7 @@ import { useSelector } from "react-redux";
 
 export default function ShopList({ searchItem = "" }) {
   const router = useRouter();
-  const data = useSelector((state) => state.productSlice.data);
+  const data = useSelector((state) => state.wishlistSlice.data);
 
   const [selectedCategory, setSelectedCategory] = useState("");
 
