@@ -1,3 +1,10 @@
+import Button from "@/components/common/Button";
+import HorizontalLine from "@/components/common/HorizontalLine";
+import { setUser } from "@/store/slices/authSlice";
+import { Picker } from "@react-native-picker/picker";
+import axios from "axios";
+import { router } from "expo-router";
+import React, { useState } from "react";
 import {
   Image,
   ScrollView,
@@ -8,101 +15,89 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState } from "react";
-import HorizontalLine from "@/components/common/HorizontalLine";
-import { Picker } from "@react-native-picker/picker";
-import Button from "@/components/common/Button";
-import { router } from "expo-router";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { setUser } from "@/store/slices/authSlice";
 
 export default function profile() {
-  const dispatch =useDispatch();
-  
-  const token = useSelector((state)=>state.auth.token)
-   
+  const dispatch = useDispatch();
+
+  const token = useSelector((state) => state.auth.token);
+
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [pincode,setPincode]= useState("");
-  const [address,setAddress]= useState("");
-  const [city,setCity ]= useState("");
-  const [state,setState]= useState("");
-  const [country,setCountry]= useState("");
-  const [bankAccountNumber,setBankAccountNumber]= useState("");
-  const [accountHolderName,setAccountHolderName]= useState("");
-  const [IFSCCode,setIFSCCode]= useState("");
+  const [pincode, setPincode] = useState("");
+  const [address, setAddress] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [country, setCountry] = useState("");
+  const [bankAccountNumber, setBankAccountNumber] = useState("");
+  const [accountHolderName, setAccountHolderName] = useState("");
+  const [IFSCCode, setIFSCCode] = useState("");
   const [selectedState, setSelectedState] = useState("");
 
-
-  const personalDetails = {firstName, lastName, email};
-  const saveAddress = {pincode,address,city,selectedState,country};
-  const saveBankDetails={bankAccountNumber,accountHolderName,IFSCCode};
+  const personalDetails = { firstName, lastName, email };
+  const saveAddress = { pincode, address, city, selectedState, country };
+  const saveBankDetails = { bankAccountNumber, accountHolderName, IFSCCode };
 
   const showToast = (message) => {
     ToastAndroid.show(`${message}`, ToastAndroid.SHORT);
   };
 
   const handleSaveBankDetails = async () => {
-    console.log('BankDetails form console:',saveBankDetails);
+    console.log("BankDetails form console:", saveBankDetails);
     try {
-      const response = await axios.post('https://674959cf8680202966309ca9.mockapi.io/personalDetails',saveBankDetails)
-      showToast('Bank Details Updated');
-
+      const response = await axios.post(
+        "https://674959cf8680202966309ca9.mockapi.io/personalDetails",
+        saveBankDetails
+      );
+      showToast("Bank Details Updated");
     } catch (error) {
-      console.error('Error:',error);
-      
+      console.error("Error:", error);
     }
-    // router.replace("/(tabs)/account");
   };
 
   const handleUpdate = async () => {
-    console.log('updated personal details', personalDetails);
+    console.log("updated personal details", personalDetails);
     try {
       const response = await axios.post(
-        'https://stylish-backend-exfz.onrender.com/api/v1/auth/editUser',
+        "https://stylish-backend-exfz.onrender.com/api/v1/auth/editUser",
         personalDetails,
-        { headers:{
-          'Authorization':`Bearer ${token}`,
-
-        }}
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
-      showToast('Personal Details Updated');
-      router.replace('/account')
-       dispatch(setUser(response.data.user));
-      
-      console.log('API response from server:', response.data.user);
-
-    }catch (error) {
+      showToast("Personal Details Updated");
+      router.replace("/account");
+      dispatch(setUser(response.data));
+      console.log("API response from server:", response.data.user);
+    } catch (error) {
       if (error.response) {
-        console.error('API error:', error.response.data);
-        showToast('Failed to update: ' + error.response.data.message);
+        console.error("API error:", error.response.data);
+        showToast("Failed to update: " + error.response.data.message);
       } else if (error.request) {
-        console.error('No response from server:', error.request);
-        showToast('Server not reachable. Please try again.');
+        console.error("No response from server:", error.request);
+        showToast("Server not reachable. Please try again.");
       } else {
-        console.error('Error:', error.message);
-        showToast('An unexpected error occurred.');
+        console.error("Error:", error.message);
+        showToast("An unexpected error occurred.");
       }
     }
-    
   };
-  
 
-   const handleSaveAddress = () =>{
-    
-    console.log('Saved Address from console',saveAddress);
+  const handleSaveAddress = () => {
+    console.log("Saved Address from console", saveAddress);
     try {
-      const response = axios.post('https://674959cf8680202966309ca9.mockapi.io/personalDetails',saveAddress)
-      console.log('Response :',response)
-      
+      const response = axios.post(
+        "https://674959cf8680202966309ca9.mockapi.io/personalDetails",
+        saveAddress
+      );
+      console.log("Response :", response);
     } catch (error) {
-      
-      console.error('Error',error,);
+      console.error("Error", error);
     }
-
-   }
+  };
 
   return (
     <ScrollView style={styles.container}>
@@ -157,22 +152,33 @@ export default function profile() {
       </Text>
       <View>
         <Text style={{ marginTop: 20 }}>Pincode</Text>
-        <TextInput onChangeText={setPincode} style={styles.inputBox} placeholder=""></TextInput>
+        <TextInput
+          onChangeText={setPincode}
+          style={styles.inputBox}
+          placeholder=""
+        ></TextInput>
       </View>
       <View>
         <Text style={{ marginTop: 20 }}>Address</Text>
-        <TextInput onChangeText={setAddress} placeholder="" style={styles.inputBox}></TextInput>
+        <TextInput
+          onChangeText={setAddress}
+          placeholder=""
+          style={styles.inputBox}
+        ></TextInput>
       </View>
       <View>
         <Text style={{ marginTop: 20 }}>City</Text>
-        <TextInput onChangeText={setCity} placeholder="" style={styles.inputBox}></TextInput>
+        <TextInput
+          onChangeText={setCity}
+          placeholder=""
+          style={styles.inputBox}
+        ></TextInput>
       </View>
       <View>
         <Text style={{ marginTop: 20 }}>State</Text>
         <Picker
           selectedValue={selectedState}
           onValueChange={(itemValue) => setSelectedState(itemValue)}
-          
           style={{
             marginTop: 10,
             height: 50,
@@ -190,12 +196,14 @@ export default function profile() {
       </View>
       <View style={{ marginBottom: 36 }}>
         <Text style={{ marginTop: 20 }}>Country</Text>
-        <TextInput onChangeText={setCountry} placeholder="" style={styles.inputBox}></TextInput>
+        <TextInput
+          onChangeText={setCountry}
+          placeholder=""
+          style={styles.inputBox}
+        ></TextInput>
       </View>
       <Button onPress={handleSaveAddress} title="Save Address" />
       <View style={{ marginTop: 28 }}></View>
-
-
 
       <HorizontalLine />
 

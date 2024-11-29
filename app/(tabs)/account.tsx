@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 const account = () => {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.auth.user);
+  console.log(userData);
   const handleLogout = () => {
     dispatch(logOut());
     router.replace("/auth/login");
@@ -45,11 +46,10 @@ const account = () => {
         </View>
 
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-          <Text style={styles.profileText}>Full Name</Text>
-
+          <Text style={styles.profileText}>Name</Text>
           <Text style={{ fontSize: 16 }}>
             {userData?.firstName}
-            {userData?.lastName}{" "}
+            {userData?.lastName}
           </Text>
         </View>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
@@ -80,42 +80,12 @@ const account = () => {
         </View>
       </View>
 
-      {/* <View style={styles.paymentSetting}>
-        <View
-          style={{
-            flexDirection: "row",
-            padding: 10,
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <View style={{ flexDirection: "row", gap: 20 }}>
-            <AntDesign name="creditcard" size={24} color="black" />
-            <Text style={styles.sectionHeading}>Payment Settings</Text>
-          </View>
-
-          <TouchableOpacity>
-            <Text style={styles.settingText}>Edit</Text>
-          </TouchableOpacity>
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            paddingBottom: 10,
-          }}
-        >
-          <Text style={styles.profileText}>Default Credit Card</Text>
-        </View>
-      </View> */}
-
       <View style={styles.appSettings}>
         <View
           style={{
             flexDirection: "row",
             padding: 20,
             gap: 20,
-            // justifyContent: "",
             alignItems: "center",
           }}
         >

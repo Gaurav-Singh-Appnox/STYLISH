@@ -12,6 +12,7 @@ const authSlice = createSlice({
         state.token = action.payload.token;
       }
       state.user = action.payload.user;
+      console.log("user details updated successfully", action.payload);
     },
     logOut: (state) => {
       state.user = null;

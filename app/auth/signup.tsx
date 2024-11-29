@@ -2,11 +2,10 @@ import axios from "axios";
 import { router } from "expo-router";
 import { useState } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
+import { useDispatch } from "react-redux";
 import * as yup from "yup";
 import Button from "../../components/common/Button";
 import CustomInput from "../../components/common/CustomInput";
-import { useDispatch } from "react-redux";
-
 
 const signUpSchema = yup
   .object({
@@ -42,6 +41,7 @@ export default function SignUp() {
         { abortEarly: false }
       );
       setErrors({});
+      console.log("signup api called");
       const response = await axios.post(
         "https://stylish-backend-exfz.onrender.com/api/v1/auth/signup",
         {
