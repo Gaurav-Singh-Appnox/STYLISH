@@ -1,14 +1,45 @@
-import { configureStore } from "@reduxjs/toolkit";
-import authReducer from "./slices/authSlice";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import {
+  FLUSH,
+  PAUSE,
+  PERSIST,
+  persistReducer,
+  PURGE,
+  REGISTER,
+  REHYDRATE,
+} from "redux-persist";
+import persistStore from "redux-persist/es/persistStore";
+import authReducer from "../store/slices/authSlice";
 import cartReducer from "./slices/cartSlice";
-import productReducer from "./slices/productSlice";
+import wishlistReducer from "./slices/wishlistSlice";
 
-const store = configureStore({
-  reducer: {
-    auth: authReducer,
-    productSlice: productReducer,
-    cart: cartReducer,
-  },
+const persistConfig = {
+  key: "root",
+  storage: AsyncStorage,
+  whitelist: ["cart", "wishlistSlice", "auth"],
+};
+
+const rootReducer = combineReducers({
+  cart: cartReducer,
+  wishlistSlice: wishlistReducer,
+  auth: authReducer,
 });
 
-export default store;
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+export const store = configureStore({
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }).concat(),
+});
+
+store.subscribe(() => {
+  console.log("Persisted state:", store.getState());
+});
+
+export const persistor = persistStore(store);
