@@ -1,84 +1,67 @@
-import Button from "@/components/common/Button";
-import HorizontalLine from "@/components/common/HorizontalLine";
-import { setUser } from "@/store/slices/authSlice";
-import { Picker } from "@react-native-picker/picker";
-import axios from "axios";
-import { router } from "expo-router";
-import React, { useState } from "react";
+
 import {
   Image,
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   ToastAndroid,
-  TouchableOpacity,
   View,
 } from "react-native";
+import { TextInput, TouchableOpacity } from "react-native";
+import { Picker } from "@react-native-picker/picker";
 import { useDispatch, useSelector } from "react-redux";
+import { Formik } from "formik";
+import * as Yup from "yup";
+import axios from "axios";
+import Button from "@/components/common/Button";
+import HorizontalLine from "@/components/common/HorizontalLine";
+import { setUser } from "@/store/slices/authSlice";
+import { router } from "expo-router";
 
-export default function profile() {
+const profile = () => {
   const dispatch = useDispatch();
-
   const token = useSelector((state) => state.auth.token);
 
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [pincode, setPincode] = useState("");
-  const [address, setAddress] = useState("");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
-  const [country, setCountry] = useState("");
-  const [bankAccountNumber, setBankAccountNumber] = useState("");
-  const [accountHolderName, setAccountHolderName] = useState("");
-  const [IFSCCode, setIFSCCode] = useState("");
-  const [selectedState, setSelectedState] = useState("");
-
-  const personalDetails = { firstName, lastName, email };
-  const saveAddress = { pincode, address, city, selectedState, country };
-  const saveBankDetails = { bankAccountNumber, accountHolderName, IFSCCode };
-
+  // Toast utility
   const showToast = (message) => {
-    ToastAndroid.show(`${message}`, ToastAndroid.SHORT);
+    ToastAndroid.show(message, ToastAndroid.SHORT);
   };
 
-  const handleSaveBankDetails = async () => {
-    console.log("BankDetails form console:", saveBankDetails);
-    try {
-      const response = await axios.post(
-        "https://674959cf8680202966309ca9.mockapi.io/personalDetails",
-        saveBankDetails
-      );
-      showToast("Bank Details Updated");
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
+  // Yup Validation Schemas
+  const personalDetailsSchema = Yup.object().shape({
+    firstName: Yup.string().required("First name is required"),
+    lastName: Yup.string().required("Last name is required"),
+    email: Yup.string().email("Invalid email").required("Email is required"),
+  });
 
-  const handleUpdate = async () => {
-    console.log("updated personal details", personalDetails);
+  const addressSchema = Yup.object().shape({
+    pincode: Yup.string()
+      .matches(/^\d{6}$/, "Pincode must be 6 digits")
+      .required("Pincode is required"),
+    address: Yup.string().required("Address is required"),
+    city: Yup.string().required("City is required"),
+    selectedState: Yup.string().required("State is required"),
+    country: Yup.string().required("Country is required"),
+  });
+
+  const handleUpdate = async (values) => {
+    console.log("Updated Personal Details:", values);
+
     try {
       const response = await axios.post(
         "https://stylish-backend-exfz.onrender.com/api/v1/auth/editUser",
-        personalDetails,
+        values,
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
       showToast("Personal Details Updated");
       router.replace("/account");
-      dispatch(setUser(response.data));
-      console.log("API response from server:", response.data.user);
+      dispatch(setUser(response.data.user));
     } catch (error) {
       if (error.response) {
         console.error("API error:", error.response.data);
         showToast("Failed to update: " + error.response.data.message);
-      } else if (error.request) {
-        console.error("No response from server:", error.request);
-        showToast("Server not reachable. Please try again.");
       } else {
         console.error("Error:", error.message);
         showToast("An unexpected error occurred.");
@@ -86,16 +69,17 @@ export default function profile() {
     }
   };
 
-  const handleSaveAddress = () => {
-    console.log("Saved Address from console", saveAddress);
+  const handleSaveAddress = async (values) => {
+    console.log("Saved Address:", values);
+
     try {
-      const response = axios.post(
+      const response = await axios.post(
         "https://674959cf8680202966309ca9.mockapi.io/personalDetails",
-        saveAddress
+        values
       );
-      console.log("Response :", response);
+      showToast("Address Saved");
     } catch (error) {
-      console.error("Error", error);
+      console.error("Error:", error);
     }
   };
 
@@ -107,133 +91,130 @@ export default function profile() {
           source={require("assets/images/userImg.png")}
         />
       </View>
+
       <Text style={{ fontSize: 18, marginTop: 28 }}>Personal Details:</Text>
-
-      <View>
-        <Text style={{ marginTop: 16 }}>First Name</Text>
-        <TextInput
-          placeholder=""
-          onChangeText={setFirstName}
-          style={styles.inputBox}
-        ></TextInput>
-      </View>
-      <View>
-        <Text style={{ marginTop: 16 }}>Last Name</Text>
-        <TextInput
-          placeholder=""
-          onChangeText={setLastName}
-          style={styles.inputBox}
-        ></TextInput>
-      </View>
-      <View>
-        <Text style={{ marginTop: 16 }}>Email Address</Text>
-        <TextInput
-          placeholder="Email"
-          onChangeText={setEmail}
-          style={styles.inputBox}
-        ></TextInput>
-      </View>
-      <View
-        style={{
-          marginTop: 14,
-          marginBottom: 36,
-          backgroundColor: "",
-        }}
+      <Formik
+        initialValues={{ firstName: "", lastName: "", email: "" }}
+        validationSchema={personalDetailsSchema}
+        onSubmit={handleUpdate}
       >
-        <TouchableOpacity>
-          <Button onPress={handleUpdate} title={"Update"} />
-        </TouchableOpacity>
-      </View>
+        {({ handleChange, handleSubmit, errors, touched, values }) => (
+          <>
+            <TextInput
+              placeholder="First Name"
+              onChangeText={handleChange("firstName")}
+              value={values.firstName}
+              style={styles.inputBox}
+            />
+            {touched.firstName && errors.firstName && (
+              <Text style={styles.error}>{errors.firstName}</Text>
+            )}
+
+            <TextInput
+              placeholder="Last Name"
+              onChangeText={handleChange("lastName")}
+              value={values.lastName}
+              style={styles.inputBox}
+            />
+            {touched.lastName && errors.lastName && (
+              <Text style={styles.error}>{errors.lastName}</Text>
+            )}
+
+            <TextInput
+              placeholder="Email Address"
+              onChangeText={handleChange("email")}
+              value={values.email}
+              style={styles.inputBox}
+            />
+            {touched.email && errors.email && (
+              <Text style={styles.error}>{errors.email}</Text>
+            )}
+
+            <TouchableOpacity>
+              <Button onPress={handleSubmit} title="Update" />
+            </TouchableOpacity>
+          </>
+        )}
+      </Formik>
 
       <HorizontalLine />
 
-      <Text style={{ fontSize: 18, marginTop: 28 }}>
-        Business Address Details:
-      </Text>
-      <View>
-        <Text style={{ marginTop: 20 }}>Pincode</Text>
-        <TextInput
-          onChangeText={setPincode}
-          style={styles.inputBox}
-          placeholder=""
-        ></TextInput>
-      </View>
-      <View>
-        <Text style={{ marginTop: 20 }}>Address</Text>
-        <TextInput
-          onChangeText={setAddress}
-          placeholder=""
-          style={styles.inputBox}
-        ></TextInput>
-      </View>
-      <View>
-        <Text style={{ marginTop: 20 }}>City</Text>
-        <TextInput
-          onChangeText={setCity}
-          placeholder=""
-          style={styles.inputBox}
-        ></TextInput>
-      </View>
-      <View>
-        <Text style={{ marginTop: 20 }}>State</Text>
-        <Picker
-          selectedValue={selectedState}
-          onValueChange={(itemValue) => setSelectedState(itemValue)}
-          style={{
-            marginTop: 10,
-            height: 50,
-            width: 400,
-            borderWidth: 2,
-            borderColor: "grey",
-          }}
-        >
-          <Picker.Item label="Select a state" value="" />
-          <Picker.Item label="California" value="CA" />
-          <Picker.Item label="Texas" value="TX" />
-          <Picker.Item label="Florida" value="FL" />
-          <Picker.Item label="New York" value="NY" />
-        </Picker>
-      </View>
-      <View style={{ marginBottom: 36 }}>
-        <Text style={{ marginTop: 20 }}>Country</Text>
-        <TextInput
-          onChangeText={setCountry}
-          placeholder=""
-          style={styles.inputBox}
-        ></TextInput>
-      </View>
-      <Button onPress={handleSaveAddress} title="Save Address" />
-      <View style={{ marginTop: 28 }}></View>
+      <Text style={{ fontSize: 18, marginTop: 28 }}>Business Address Details:</Text>
+      <Formik
+        initialValues={{
+          pincode: "",
+          address: "",
+          city: "",
+          selectedState: "",
+          country: "",
+        }}
+        validationSchema={addressSchema}
+        onSubmit={handleSaveAddress}
+      >
+        {({ handleChange, handleSubmit, errors, touched, values }) => (
+          <>
+            <TextInput
+              placeholder="Pincode"
+              onChangeText={handleChange("pincode")}
+              value={values.pincode}
+              style={styles.inputBox}
+            />
+            {touched.pincode && errors.pincode && (
+              <Text style={styles.error}>{errors.pincode}</Text>
+            )}
 
-      <HorizontalLine />
+            <TextInput
+              placeholder="Address"
+              onChangeText={handleChange("address")}
+              value={values.address}
+              style={styles.inputBox}
+            />
+            {touched.address && errors.address && (
+              <Text style={styles.error}>{errors.address}</Text>
+            )}
 
-      <Text style={{ fontSize: 18, marginTop: 28 }}>Bank Address Details:</Text>
-      <View>
-        <Text style={{ marginTop: 20 }}>Bank Account Number</Text>
-        <TextInput
-          style={styles.inputBox}
-          placeholder="2046xxxxxxx"
-        ></TextInput>
-      </View>
-      <View>
-        <Text style={{ marginTop: 20 }}>Account Holder's Name</Text>
-        <TextInput
-          placeholder="Abhijeet shisodiya"
-          style={styles.inputBox}
-        ></TextInput>
-      </View>
-      <View>
-        <Text style={{ marginTop: 20 }}>IFSC Code</Text>
-        <TextInput
-          placeholder="SBIN00248"
-          style={[styles.inputBox, { marginBottom: 34 }]}
-        ></TextInput>
-      </View>
-      <Button onPress={handleSaveBankDetails} title="Save Bank Detials" />
-      <View style={{ marginTop: 10 }}></View>
+            <TextInput
+              placeholder="City"
+              onChangeText={handleChange("city")}
+              value={values.city}
+              style={styles.inputBox}
+            />
+            {touched.city && errors.city && (
+              <Text style={styles.error}>{errors.city}</Text>
+            )}
+
+            <Picker
+              selectedValue={values.selectedState}
+              onValueChange={handleChange("selectedState")}
+              style={styles.picker}
+            >
+              <Picker.Item label="Select a state" value="" />
+              <Picker.Item label="California" value="CA" />
+              <Picker.Item label="Texas" value="TX" />
+              <Picker.Item label="Florida" value="FL" />
+              <Picker.Item label="New York" value="NY" />
+            </Picker>
+            {touched.selectedState && errors.selectedState && (
+              <Text style={styles.error}>{errors.selectedState}</Text>
+            )}
+
+            <TextInput
+              placeholder="Country"
+              onChangeText={handleChange("country")}
+              value={values.country}
+              style={styles.inputBox}
+            />
+            {touched.country && errors.country && (
+              <Text style={styles.error}>{errors.country}</Text>
+            )}
+
+            <Button onPress={handleSubmit} title="Save Address" />
+          </>
+        )}
+      </Formik>
     </ScrollView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -253,4 +234,18 @@ const styles = StyleSheet.create({
     height: 48,
     fontWeight: "bold",
   },
+  picker: {
+    marginTop: 10,
+    height: 50,
+    width: 400,
+    borderWidth: 2,
+    borderColor: "grey",
+  },
+  error: {
+    color: "red",
+    fontSize: 12,
+    marginTop: 5,
+  },
 });
+
+export default profile;

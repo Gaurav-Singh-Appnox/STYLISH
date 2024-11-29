@@ -79,6 +79,8 @@ const account = () => {
         </View>
       </View>
 
+  
+
       <View style={styles.appSettings}>
         <View
           style={{
