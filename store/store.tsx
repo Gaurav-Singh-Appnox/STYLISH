@@ -38,8 +38,4 @@ export const store = configureStore({
     }).concat(),
 });
 
-store.subscribe(() => {
-  console.log("Persisted state:", store.getState());
-});
-
 export const persistor = persistStore(store);

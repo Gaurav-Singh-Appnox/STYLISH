@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 
 export default function Index() {
   const token = useSelector((state) => state.auth.token);
-  console.log(token);
   useEffect(() => {
     const checkFirstTimeUser = async () => {
       const isFirstTime = await AsyncStorage.getItem("first_time");

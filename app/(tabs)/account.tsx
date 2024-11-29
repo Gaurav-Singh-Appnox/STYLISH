@@ -1,5 +1,4 @@
 import { logOut } from "@/store/slices/authSlice";
-import AntDesign from "@expo/vector-icons/AntDesign";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { router } from "expo-router";
@@ -46,9 +45,9 @@ const account = () => {
         </View>
 
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-          <Text style={styles.profileText}>Full Name</Text>
+          <Text style={styles.profileText}>Name</Text>
 
-          <Text style={{ fontSize: 16 }}>{userData?.name || "user"}</Text>
+          <Text style={{ fontSize: 16 }}>{userData?.name || "abc"}</Text>
         </View>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <Text style={styles.profileText}>Email</Text>
@@ -56,56 +55,10 @@ const account = () => {
         </View>
 
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-          <Text style={styles.profileText}>Phone</Text>
-          <Text style={{ fontSize: 16 }}>+92 39312123123</Text>
-        </View>
-
-        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <Text style={styles.profileText}>Address</Text>
           <Text style={{ fontSize: 16 }}>1850BigELm City Kansas</Text>
         </View>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            paddingBottom: 10,
-          }}
-        >
-          <Text style={styles.profileText}>About</Text>
-          <Text style={{ fontSize: 16 }}>
-            Aliquto portofilio mornsish buthn
-          </Text>
-        </View>
       </View>
-
-      {/* <View style={styles.paymentSetting}>
-        <View
-          style={{
-            flexDirection: "row",
-            padding: 10,
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <View style={{ flexDirection: "row", gap: 20 }}>
-            <AntDesign name="creditcard" size={24} color="black" />
-            <Text style={styles.sectionHeading}>Payment Settings</Text>
-          </View>
-
-          <TouchableOpacity>
-            <Text style={styles.settingText}>Edit</Text>
-          </TouchableOpacity>
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            paddingBottom: 10,
-          }}
-        >
-          <Text style={styles.profileText}>Default Credit Card</Text>
-        </View>
-      </View> */}
 
       <View style={styles.appSettings}>
         <View
@@ -244,7 +197,7 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: "white",
     gap: 20,
-    
+
     borderWidth: 0.2,
   },
 });
