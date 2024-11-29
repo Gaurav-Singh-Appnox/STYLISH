@@ -59,6 +59,8 @@ export default function checkout() {
       <View style={{ paddingTop: 40 }}>
         <Button title={"Proceed to Payment"} onPress={handleProceedToPayment} />
       </View>
+    
+
     </ScrollView>
   );
 }

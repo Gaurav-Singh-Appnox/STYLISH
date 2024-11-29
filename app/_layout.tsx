@@ -19,13 +19,11 @@ export default function RootLayout() {
         <Stack.Screen name="auth/reset-password" />
         <Stack.Screen name="initial-load" />
         <Stack.Screen name="(tabs)" />
-        <Stack.Screen
-          name="detailsPage"
+        <Stack.Screen name="detailsPage"
           options={{
             headerShown: true,
             headerTitle: "",
-            headerRight: () => <CartIcon />,
-          }}
+            headerRight: () => <CartIcon />,     }}
         />
         <Stack.Screen
           name="Cart"
@@ -77,7 +75,7 @@ function AppInitializer() {
     dispatch(initializeWishlist());
     const userData = await loadUserDataFromLocalStorage();
     if (userData) {
-      dispatch(setUserDataFromLocalStorage(userData));
+      dispatch(setUserDataiFromLocalStorage(userData));
     }
     const initializeCart = async () => {
       const savedCart = await loadCartFromStorage();

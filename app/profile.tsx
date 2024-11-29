@@ -23,21 +23,16 @@ export default function profile() {
 
   const data = [firstname, lastname, email];
 
-  try {
-    const response = axios.post('',data);
-    console.log(response);
-    
-  } catch (error) {
-    console.error('error',error)
-    
-  }
+
 
 
   const showToast = () => {
-    ToastAndroid.show("Saved successfully !", ToastAndroid.SHORT);
+    ToastAndroid.show(" Saved successfully !", ToastAndroid.SHORT);
   };
   const handleSave = () => {
     showToast();
+    
+    console.log(data)
     router.replace("/(tabs)/account");
   };
   return (
