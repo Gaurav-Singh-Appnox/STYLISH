@@ -106,17 +106,12 @@ export default function Cart() {
             Total: ${totalAmount.toFixed(2)}
           </Text>
         </View>
-        
-        <View style={{ width:"50%"}}>
-  <Button onPress={handleCheckout} title={"Checkout"} />
-</View>
-        
-      </View>
-     
 
-      
+        <View style={{ width: "50%" }}>
+          <Button onPress={handleCheckout} title={"Checkout"} />
+        </View>
+      </View>
     </SafeAreaView>
-    
   );
 }
 
@@ -229,7 +224,7 @@ const styles = StyleSheet.create({
   stickyTabBar: {
     flexDirection: "row",
     position: "absolute",
-    justifyContent:"space-evenly",
+    justifyContent: "space-evenly",
     bottom: 0,
     width: "100%",
     backgroundColor: "white",
@@ -247,7 +242,7 @@ const styles = StyleSheet.create({
   cartSummary: {
     alignItems: "center",
     marginBottom: 10,
-    backgroundColor:""
+    backgroundColor: "",
   },
   totalAmount: {
     fontSize: 18,

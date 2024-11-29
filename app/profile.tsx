@@ -14,32 +14,96 @@ import { Picker } from "@react-native-picker/picker";
 import Button from "@/components/common/Button";
 import { router } from "expo-router";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "@/store/slices/authSlice";
 
 export default function profile() {
-  const [firstname, setFirstName] = useState("");
-  const [lastname, setLastName] = useState("");
+  const dispatch =useDispatch();
+  
+  const token = useSelector((state)=>state.auth.token)
+   
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  const [pincode,setPincode]= useState("");
+  const [address,setAddress]= useState("");
+  const [city,setCity ]= useState("");
+  const [state,setState]= useState("");
+  const [country,setCountry]= useState("");
+  const [bankAccountNumber,setBankAccountNumber]= useState("");
+  const [accountHolderName,setAccountHolderName]= useState("");
+  const [IFSCCode,setIFSCCode]= useState("");
   const [selectedState, setSelectedState] = useState("");
 
-  const data = [firstname, lastname, email];
 
-  try {
-    const response = axios.post('',data);
-    console.log(response);
-    
-  } catch (error) {
-    console.error('error',error)
-    
-  }
+  const personalDetails = {firstName, lastName, email};
+  const saveAddress = {pincode,address,city,selectedState,country};
+  const saveBankDetails={bankAccountNumber,accountHolderName,IFSCCode};
 
-
-  const showToast = () => {
-    ToastAndroid.show("Saved successfully !", ToastAndroid.SHORT);
+  const showToast = (message) => {
+    ToastAndroid.show(`${message}`, ToastAndroid.SHORT);
   };
-  const handleSave = () => {
-    showToast();
-    router.replace("/(tabs)/account");
+
+  const handleSaveBankDetails = async () => {
+    console.log('BankDetails form console:',saveBankDetails);
+    try {
+      const response = await axios.post('https://674959cf8680202966309ca9.mockapi.io/personalDetails',saveBankDetails)
+      showToast('Bank Details Updated');
+
+    } catch (error) {
+      console.error('Error:',error);
+      
+    }
+    // router.replace("/(tabs)/account");
   };
+
+  const handleUpdate = async () => {
+    console.log('updated personal details', personalDetails);
+    try {
+      const response = await axios.post(
+        'https://stylish-backend-exfz.onrender.com/api/v1/auth/editUser',
+        personalDetails,
+        { headers:{
+          'Authorization':`Bearer ${token}`,
+
+        }}
+      );
+      showToast('Personal Details Updated');
+      router.replace('/account')
+       dispatch(setUser(response.data.user));
+      
+      console.log('API response from server:', response.data.user);
+
+    }catch (error) {
+      if (error.response) {
+        console.error('API error:', error.response.data);
+        showToast('Failed to update: ' + error.response.data.message);
+      } else if (error.request) {
+        console.error('No response from server:', error.request);
+        showToast('Server not reachable. Please try again.');
+      } else {
+        console.error('Error:', error.message);
+        showToast('An unexpected error occurred.');
+      }
+    }
+    
+  };
+  
+
+   const handleSaveAddress = () =>{
+    
+    console.log('Saved Address from console',saveAddress);
+    try {
+      const response = axios.post('https://674959cf8680202966309ca9.mockapi.io/personalDetails',saveAddress)
+      console.log('Response :',response)
+      
+    } catch (error) {
+      
+      console.error('Error',error,);
+    }
+
+   }
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.imgDiv}>
@@ -82,7 +146,7 @@ export default function profile() {
         }}
       >
         <TouchableOpacity>
-          <Button onPress={handleSave} title={"Save"} />
+          <Button onPress={handleUpdate} title={"Update"} />
         </TouchableOpacity>
       </View>
 
@@ -93,21 +157,22 @@ export default function profile() {
       </Text>
       <View>
         <Text style={{ marginTop: 20 }}>Pincode</Text>
-        <TextInput style={styles.inputBox} placeholder=""></TextInput>
+        <TextInput onChangeText={setPincode} style={styles.inputBox} placeholder=""></TextInput>
       </View>
       <View>
         <Text style={{ marginTop: 20 }}>Address</Text>
-        <TextInput placeholder="" style={styles.inputBox}></TextInput>
+        <TextInput onChangeText={setAddress} placeholder="" style={styles.inputBox}></TextInput>
       </View>
       <View>
         <Text style={{ marginTop: 20 }}>City</Text>
-        <TextInput placeholder="" style={styles.inputBox}></TextInput>
+        <TextInput onChangeText={setCity} placeholder="" style={styles.inputBox}></TextInput>
       </View>
       <View>
         <Text style={{ marginTop: 20 }}>State</Text>
         <Picker
           selectedValue={selectedState}
           onValueChange={(itemValue) => setSelectedState(itemValue)}
+          
           style={{
             marginTop: 10,
             height: 50,
@@ -125,8 +190,12 @@ export default function profile() {
       </View>
       <View style={{ marginBottom: 36 }}>
         <Text style={{ marginTop: 20 }}>Country</Text>
-        <TextInput placeholder="" style={styles.inputBox}></TextInput>
+        <TextInput onChangeText={setCountry} placeholder="" style={styles.inputBox}></TextInput>
       </View>
+      <Button onPress={handleSaveAddress} title="Save Address" />
+      <View style={{ marginTop: 28 }}></View>
+
+
 
       <HorizontalLine />
 
@@ -152,7 +221,7 @@ export default function profile() {
           style={[styles.inputBox, { marginBottom: 34 }]}
         ></TextInput>
       </View>
-      <Button onPress={handleSave} title="Save" />
+      <Button onPress={handleSaveBankDetails} title="Save Bank Detials" />
       <View style={{ marginTop: 10 }}></View>
     </ScrollView>
   );
