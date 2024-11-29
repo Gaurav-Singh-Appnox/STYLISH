@@ -1,10 +1,4 @@
-import Button from "@/components/common/Button";
-import HorizontalLine from "@/components/common/HorizontalLine";
-import { setUser } from "@/store/slices/authSlice";
-import { Picker } from "@react-native-picker/picker";
-import axios from "axios";
-import { router } from "expo-router";
-import React, { useState } from "react";
+
 import {
   Image,
   ScrollView,
