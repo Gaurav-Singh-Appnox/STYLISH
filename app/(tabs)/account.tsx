@@ -45,13 +45,12 @@ const account = () => {
         </View>
 
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-          <Text style={styles.profileText}>Name</Text>
+          <Text style={styles.profileText}>Full Name</Text>
 
-<<<<<<< HEAD
-          <Text style={{ fontSize: 16 }}>{userData?.name || "abc"}</Text>
-=======
-          <Text style={{ fontSize: 16 }}>{userData?.firstName}{userData?.lastName} </Text>
->>>>>>> c86fe7dab6abc47dd7aaee17b4715931966862d1
+          <Text style={{ fontSize: 16 }}>
+            {userData?.firstName}
+            {userData?.lastName}{" "}
+          </Text>
         </View>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <Text style={styles.profileText}>Email</Text>
@@ -59,10 +58,56 @@ const account = () => {
         </View>
 
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+          <Text style={styles.profileText}>Phone</Text>
+          <Text style={{ fontSize: 16 }}>+92 39312123123</Text>
+        </View>
+
+        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <Text style={styles.profileText}>Address</Text>
           <Text style={{ fontSize: 16 }}>1850BigELm City Kansas</Text>
         </View>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            paddingBottom: 10,
+          }}
+        >
+          <Text style={styles.profileText}>About</Text>
+          <Text style={{ fontSize: 16 }}>
+            Aliquto portofilio mornsish buthn
+          </Text>
+        </View>
       </View>
+
+      {/* <View style={styles.paymentSetting}>
+        <View
+          style={{
+            flexDirection: "row",
+            padding: 10,
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <View style={{ flexDirection: "row", gap: 20 }}>
+            <AntDesign name="creditcard" size={24} color="black" />
+            <Text style={styles.sectionHeading}>Payment Settings</Text>
+          </View>
+
+          <TouchableOpacity>
+            <Text style={styles.settingText}>Edit</Text>
+          </TouchableOpacity>
+        </View>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            paddingBottom: 10,
+          }}
+        >
+          <Text style={styles.profileText}>Default Credit Card</Text>
+        </View>
+      </View> */}
 
       <View style={styles.appSettings}>
         <View
