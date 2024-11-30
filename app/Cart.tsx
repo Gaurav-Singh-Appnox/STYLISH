@@ -4,6 +4,7 @@ import EvilIcons from "@expo/vector-icons/EvilIcons";
 import { router } from "expo-router";
 import {
   Image,
+  Modal,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -11,14 +12,24 @@ import {
   ToastAndroid,
   TouchableOpacity,
   View,
+  TextInput,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { clearCart, removeFromCart } from "../store/slices/cartSlice";
+import { useState } from "react";
 
 export default function Cart() {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
   const totalAmount = useSelector((state) => state.cart.totalAmount);
+  const [address, setAddress] = useState({
+    address: '216 St Pauls Rd, London N1 2LL, UK',
+    contact: '+90564645243',
+  });
+  
+  const [modalVisible, setModalVisible] = useState(false);
+  const [newAddress, setNewAddress] = useState(address.address);
+  const [newContact, setNewContact] = useState(address.contact);
 
   const handleCheckout = () => {
     router.push("/checkout");
@@ -32,6 +43,16 @@ export default function Cart() {
   const handleClearCart = () => {
     showToast("Cart Cleared");
     dispatch(clearCart());
+  };
+
+  const handlePress = () => {
+    setModalVisible(true); 
+  };
+
+  const handleUpdateAddress = () => {
+    setAddress({ address: newAddress, contact: newContact });
+    setModalVisible(false); 
+    showToast("Address Updated");
   };
 
   const showToast = (msg) => {
@@ -49,33 +70,28 @@ export default function Cart() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <ScrollView
-        contentContainerStyle={[styles.container, { paddingBottom: 80 }]}
-      >
+      <ScrollView contentContainerStyle={[styles.container, { paddingBottom: 80 }]}>
         <View style={{ flexDirection: "row", marginTop: 13 }}>
           <EvilIcons name="location" size={20} color="black" />
-          <Text style={{ fontSize: 14, fontWeight: "500" }}>
-            Delivery Address:
-          </Text>
+          <Text style={{ fontSize: 14, fontWeight: "500" }}>Delivery Address:</Text>
         </View>
 
         <View style={styles.delivery}>
           <View style={styles.addressText}>
             <Text>Address:</Text>
-            <Text>216 St Paul's Rd, London N1 2LL, UK</Text>
-            <Text>Contact: +44-784232</Text>
+            <Text>{address.address}</Text>
+            <Text>Contact: {address.contact}</Text>
           </View>
           <View style={styles.newAddress}>
-            <AntDesign name="pluscircleo" size={24} color="black" />
+            <TouchableOpacity onPress={handlePress}>
+              <AntDesign name="pluscircleo" size={24} color="black" />
+            </TouchableOpacity>
           </View>
         </View>
 
         <View style={styles.headerRow}>
           <Text style={styles.headerText}>Shopping List</Text>
-          <TouchableOpacity
-            style={styles.clearButton}
-            onPress={handleClearCart}
-          >
+          <TouchableOpacity style={styles.clearButton} onPress={handleClearCart}>
             <Text style={styles.clearButtonText}>Clear Cart</Text>
           </TouchableOpacity>
         </View>
@@ -86,9 +102,7 @@ export default function Cart() {
             <View style={styles.productDetails}>
               <Text style={styles.productName}>{item.name}</Text>
               <Text style={styles.productPrice}>${item.price.toFixed(2)}</Text>
-              <Text style={styles.productQuantity}>
-                Total Quantity: {item.quantity}
-              </Text>
+              <Text style={styles.productQuantity}>Total Quantity: {item.quantity}</Text>
             </View>
             <TouchableOpacity
               style={styles.removeButton}
@@ -102,15 +116,50 @@ export default function Cart() {
 
       <View style={styles.stickyTabBar}>
         <View style={styles.cartSummary}>
-          <Text style={styles.totalAmount}>
-            Total: ${totalAmount.toFixed(2)}
-          </Text>
+          <Text style={styles.totalAmount}>Total: ${totalAmount.toFixed(2)}</Text>
         </View>
 
         <View style={{ width: "50%" }}>
           <Button onPress={handleCheckout} title={"Checkout"} />
         </View>
       </View>
+
+     
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContainer}>
+            <Text style={styles.modalTitle}>Update Address</Text>
+
+            <Text>Address:</Text>
+            <TextInput
+              style={styles.input}
+              value={newAddress}
+              onChangeText={setNewAddress}
+            />
+
+            <Text>Contact:</Text>
+            <TextInput
+              style={styles.input}
+              value={newContact}
+              onChangeText={setNewContact}
+            />
+
+            <View style={styles.modalButtons}>
+              <TouchableOpacity onPress={handleUpdateAddress} style={styles.modalButton}>
+                <Text style={styles.modalButtonText}>Update</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.modalButton}>
+                <Text style={styles.modalButtonText}>Cancel</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -124,7 +173,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     backgroundColor: "white",
   },
-
   delivery: {
     width: "100%",
     flexDirection: "row",
@@ -229,7 +277,6 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: "white",
     paddingVertical: 16,
-    // paddingHorizontal: 16,
     borderTopWidth: 1,
     borderTopColor: "#ddd",
     alignItems: "center",
@@ -242,11 +289,51 @@ const styles = StyleSheet.create({
   cartSummary: {
     alignItems: "center",
     marginBottom: 10,
-    backgroundColor: "",
   },
   totalAmount: {
     fontSize: 18,
     fontWeight: "bold",
     color: "#333",
+  },
+  modalOverlay: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContainer: {
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 10,
+    width: "80%",
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: "#ddd",
+    padding: 10,
+    marginBottom: 10,
+    borderRadius: 8,
+  },
+  modalButtons: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  modalButton: {
+    backgroundColor: "#F83758",
+    paddingVertical: 8,
+    paddingHorizontal: 10,
+    borderRadius: 8,
+    flex: 1,
+    marginHorizontal: 5,
+    alignItems: "center",
+  },
+  modalButtonText: {
+    color: "white",
+    fontSize: 16,
   },
 });

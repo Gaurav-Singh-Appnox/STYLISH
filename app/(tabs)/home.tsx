@@ -8,24 +8,56 @@ import ImageSlider from "@/components/specific/ImageSlider";
 import SpecialOffer from "@/components/specific/SpecialOffer";
 import SummerSale from "@/components/specific/SummerSale";
 import TimeBanner from "@/components/specific/TimeBanner";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Image,
   RefreshControl,
   SafeAreaView,
   ScrollView,
   StyleSheet,
+  BackHandler,
+  ToastAndroid,
 } from "react-native";
 
 const home = () => {
+
   const [refreshing, setRefreshing] = React.useState(false);
+
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     setTimeout(() => {
       setRefreshing(false);
     }, 2000);
   }, []);
-  const img = {};
+
+  const [backPressedOnce, setBackPressedOnce] = useState(false);
+
+  useEffect(() => {
+    const backAction = () => {
+      if (!backPressedOnce) {
+        ToastAndroid.show("Are you sure you want to exit?", ToastAndroid.SHORT);
+        
+        setBackPressedOnce(true);
+
+        setTimeout(() => setBackPressedOnce(false), 2000);
+
+        return true;
+      } else {
+        BackHandler.exitApp();
+        return false;
+      }
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, [backPressedOnce]);
+
+
+  
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
