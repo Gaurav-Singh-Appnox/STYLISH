@@ -11,10 +11,15 @@ import {
   View,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
+
 const account = () => {
+
   const dispatch = useDispatch();
+
   const userData = useSelector((state) => state.auth.user);
-  console.log(userData);
+
+  console.log('userData in account:',userData);
+  
   const handleLogout = () => {
     dispatch(logOut());
     router.replace("/auth/login");
@@ -48,7 +53,7 @@ const account = () => {
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <Text style={styles.profileText}>Name</Text>
           <Text style={{ fontSize: 16 }}>
-            {userData?.firstName} {userData?.lastName}
+            {userData?.firstName}{userData?.lastName}
           </Text>
         </View>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>

@@ -9,18 +9,36 @@ import SpecialOffer from "@/components/specific/SpecialOffer";
 import SummerSale from "@/components/specific/SummerSale";
 import TimeBanner from "@/components/specific/TimeBanner";
 import React from "react";
-import { Image, SafeAreaView, ScrollView, StyleSheet } from "react-native";
+import {
+  Image,
+  RefreshControl,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+} from "react-native";
 
 const home = () => {
+  const [refreshing, setRefreshing] = React.useState(false);
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
   const img = {};
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <Header />
         <SearchBar />
         <CircleSlider />
         <HomeBanner />
-        <ImageSlider/>
+        <ImageSlider />
         <TimeBanner
           heading={"Deal of the Day"}
           time={"22h 55m 20sec remaining"}

@@ -27,7 +27,6 @@ const profile = () => {
     ToastAndroid.show(message, ToastAndroid.SHORT);
   };
 
-  // Yup Validation Schemas
   const personalDetailsSchema = Yup.object().shape({
     firstName: Yup.string().required("First name is required"),
     lastName: Yup.string().required("Last name is required"),
@@ -46,6 +45,7 @@ const profile = () => {
 
   const handleUpdate = async (values) => {
     console.log("Updated Personal Details:", values);
+    showToast("Personal Details Updated");
 
     try {
       const response = await axios.post(
@@ -55,9 +55,11 @@ const profile = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      showToast("Personal Details Updated");
+      console.log('response.data.user:',response.data);
       router.replace("/account");
-      dispatch(setUser(response.data.user));
+      
+      dispatch(setUser(response.data));
+
     } catch (error) {
       if (error.response) {
         console.error("API error:", error.response.data);
@@ -130,7 +132,7 @@ const profile = () => {
               <Text style={styles.error}>{errors.email}</Text>
             )}
 
-            <TouchableOpacity>
+            <TouchableOpacity style={{marginTop:20}}>
               <Button onPress={handleSubmit} title="Update" />
             </TouchableOpacity>
           </>
@@ -202,13 +204,13 @@ const profile = () => {
               placeholder="Country"
               onChangeText={handleChange("country")}
               value={values.country}
-              style={styles.inputBox}
+              style={[styles.inputBox, {marginBottom:20}]}
             />
             {touched.country && errors.country && (
-              <Text style={styles.error}>{errors.country}</Text>
+              <Text style={[styles.error,]}>{errors.country}</Text>
             )}
 
-            <Button onPress={handleSubmit} title="Save Address" />
+            <Button  onPress={handleSubmit} title="Save Address" />
           </>
         )}
       </Formik>
