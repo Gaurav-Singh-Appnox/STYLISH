@@ -1,6 +1,9 @@
 import axios from "axios";
+import * as AuthSession from "expo-auth-session";
+import * as Google from "expo-auth-session/providers/google";
 import { router } from "expo-router";
-import { useState } from "react";
+import * as WebBrowser from "expo-web-browser";
+import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Image,
@@ -15,9 +18,16 @@ import Button from "../../components/common/Button";
 import CustomInput from "../../components/common/CustomInput";
 import { setUser } from "../../store/slices/authSlice";
 
+// Configure WebBrowser
+WebBrowser.maybeCompleteAuthSession();
+
+// yup validation
 const loginSchema = yup
   .object({
-    email: yup.string().email().required("Email is required."),
+    email: yup
+      .string()
+      .email()
+      .required("Email is required."),
     password: yup
       .string()
       .min(6, "Password must be at least 6 characters.")
@@ -37,6 +47,63 @@ export default function Login() {
   const [errors, setErrors] = useState<ErrorState>({});
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
+
+  const redirectUri = AuthSession.makeRedirectUri();
+
+  // Google Sign-In Configuration
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    androidClientId:
+      "530592032796-pmki3auqli1ce063oar29inephua40pr.apps.googleusercontent.com",
+    webClientId:
+      "530592032796-56ockaa1n0j5n52v03420idoq6etuqs6.apps.googleusercontent.com",
+    scopes: ["profile", "email"],
+    redirectUri,
+  });
+
+  // Handle Google Sign-In response
+  useEffect(() => {
+    handleGoogleSignInResponse();
+  }, [response]);
+
+  const handleGoogleSignInResponse = async () => {
+    if (response?.type === "success") {
+      const { authentication } = response;
+      try {
+        setIsLoading(true);
+
+        // Fetch user info using the access token
+        const userInfoResponse = await fetch(
+          `https://www.googleapis.com/oauth2/v3/userinfo?access_token=${authentication.accessToken}`
+        );
+        const userInfo = await userInfoResponse.json();
+
+        // Send to backend for verification and login
+        const backendResponse = await axios.post(
+          "https://stylish-backend-exfz.onrender.com/api/v1/auth/google-login",
+          {
+            idToken: authentication.idToken,
+            email: userInfo.email,
+            name: userInfo.name,
+          }
+        );
+
+        // Dispatch user data to Redux store
+        dispatch(setUser(backendResponse.data));
+
+        // Navigate to initial load screen
+        router.replace("/initial-load");
+      } catch (error) {
+        console.error("Google login error:", error);
+        setErrors({
+          api: axios.isAxiosError(error)
+            ? error.response?.data?.message || "Google login failed"
+            : "An unexpected error occurred",
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
 
   const handleLogin = async () => {
     try {
@@ -76,6 +143,10 @@ export default function Login() {
     }
   };
 
+  const handleGoogleSignIn = () => {
+    promptAsync();
+  };
+
   const handleForgotPassword = () => {
     router.push("/auth/reset-password");
   };
@@ -84,8 +155,8 @@ export default function Login() {
     router.push("/auth/signup");
   };
 
-  if (!isLoading) {
-    <ActivityIndicator size="large" color={"blue"} />;
+  if (isLoading) {
+    return <ActivityIndicator size="large" color={"blue"} />;
   }
 
   return (
@@ -122,9 +193,13 @@ export default function Login() {
       <View style={styles.socialLogin}>
         <Text style={styles.continueText}>- OR Continue with -</Text>
         <View style={styles.socialLoginIcons}>
-          <View style={styles.loginIcon}>
+          <TouchableOpacity
+            style={styles.loginIcon}
+            onPress={handleGoogleSignIn}
+            disabled={!request}
+          >
             <Image source={require("../../assets/images/GoogleIcon.png")} />
-          </View>
+          </TouchableOpacity>
           <View style={styles.loginIcon}>
             <Image source={require("../../assets/images/appleIcon.png")} />
           </View>

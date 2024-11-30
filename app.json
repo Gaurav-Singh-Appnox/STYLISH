@@ -15,7 +15,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.anonymous.STYLISH"
     },
     "web": {
       "bundler": "metro",
@@ -39,3 +40,6 @@
     }
   }
 }
+
+// android key 74:E6:D3:29:E9:FB:68:91:DB:7E:86:75:9F:23:46:7C:11:1F:37:55
+// client id for android 530592032796-pmki3auqli1ce063oar29inephua40pr.apps.googleusercontent.com
