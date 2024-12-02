@@ -1,10 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+
+const defaultImage = "../assets/images/userImg.png";
+
 const authSlice = createSlice({
   name: "auth",
   initialState: {
     user: null,
     token: null,
+    image: defaultImage, 
   },
   reducers: {
     setUser: (state, action) => {
@@ -12,15 +16,19 @@ const authSlice = createSlice({
         state.token = action.payload.token;
       }
       state.user = action.payload.user;
-      console.log('stae.user from auth slice',state.user)
-      console.log("user details updated successfully", action.payload);
+      state.image = action.payload.image || defaultImage; 
+      console.log("User details updated successfully", action.payload);
+    },
+    updateProfileImage: (state, action) => {
+      state.image = action.payload || defaultImage; 
     },
     logOut: (state) => {
       state.user = null;
       state.token = null;
+      state.image = defaultImage; 
     },
   },
 });
 
-export const { setUser, logOut } = authSlice.actions;
+export const { setUser, updateProfileImage, logOut } = authSlice.actions;
 export default authSlice.reducer;

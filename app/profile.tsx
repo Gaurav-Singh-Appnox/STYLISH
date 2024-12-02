@@ -13,16 +13,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+import * as ImagePicker from 'expo-image-picker';
 import Button from "@/components/common/Button";
 import HorizontalLine from "@/components/common/HorizontalLine";
-import { setUser } from "@/store/slices/authSlice";
+import { setUser, updateProfileImage } from "@/store/slices/authSlice";
 import { router } from "expo-router";
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import { useState } from "react";
 
 const profile = () => {
+  const { image: profileImage } = useSelector((state) => state.auth);
+
+  const [image, setImage] = useState(profileImage || "@/assets/images/userImg.png");
+
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.token);
 
-  // Toast utility
   const showToast = (message) => {
     ToastAndroid.show(message, ToastAndroid.SHORT);
   };
@@ -35,7 +41,6 @@ const profile = () => {
 
   const addressSchema = Yup.object().shape({
     pincode: Yup.string()
-      .matches(/^\d{6}$/, "Pincode must be 6 digits")
       .required("Pincode is required"),
     address: Yup.string().required("Address is required"),
     city: Yup.string().required("City is required"),
@@ -56,7 +61,7 @@ const profile = () => {
         }
       );
       console.log('response.data.user:',response.data);
-      router.replace("/account");
+      router.replace("/account2");
       
       dispatch(setUser(response.data));
 
@@ -85,13 +90,32 @@ const profile = () => {
     }
   };
 
+ 
+    
+    const handleEditProfilePicture = async () => {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+      });
+  
+      if (!result.canceled) {
+        const selectedImage = result.assets[0].uri;
+        setImage(selectedImage);
+        dispatch(updateProfileImage(selectedImage)); 
+      }
+    };
+
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.imgDiv}>
-        <Image
-          style={{ width: 100, height: 100 }}
-          source={require("assets/images/userImg.png")}
-        />
+      { <Image source={{ uri: image || require('@/assets/images/userImg.png' )}} style={{height:200,width:200,borderRadius:100 }} />}
+        <TouchableOpacity onPress={handleEditProfilePicture}>
+        <FontAwesome6 name="edit" size={24} color="skyblue" />
+
+        </TouchableOpacity>
       </View>
 
       <Text style={{ fontSize: 18, marginTop: 28 }}>Personal Details:</Text>
@@ -251,3 +275,4 @@ const styles = StyleSheet.create({
 });
 
 export default profile;
+
