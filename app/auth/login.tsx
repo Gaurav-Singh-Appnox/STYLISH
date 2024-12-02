@@ -48,8 +48,12 @@ export default function Login() {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
 
-  const redirectUri = AuthSession.makeRedirectUri();
+  // const redirectUri = AuthSession.makeRedirectUri({
+  //   scheme: "com.anonymous.STYLISH",
+  // });
 
+  const redirectUri = AuthSession.makeRedirectUri({ useProxy: true });
+  console.log("Generated Redirect URI:", redirectUri);
   // Google Sign-In Configuration
   const [request, response, promptAsync] = Google.useAuthRequest({
     androidClientId:
@@ -156,7 +160,11 @@ export default function Login() {
   };
 
   if (isLoading) {
-    return <ActivityIndicator size="large" color={"blue"} />;
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color={"blue"} />
+      </View>
+    );
   }
 
   return (
@@ -226,6 +234,11 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     paddingHorizontal: 32,
     paddingTop: 19,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
   loginWelcomeText: {
     fontSize: 36,
