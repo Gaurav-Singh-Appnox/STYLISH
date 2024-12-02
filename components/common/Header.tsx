@@ -1,40 +1,50 @@
 import { FontAwesome6 } from "@expo/vector-icons";
-import Entypo from "@expo/vector-icons/Entypo";
-import { router } from "expo-router";
+import { DrawerActions } from "@react-navigation/native";
+import { useNavigation } from "expo-router";
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSelector } from "react-redux";
 
 export default function Header() {
+  const navigation = useNavigation();
   const cartItems = useSelector((state) => state.cart.items);
+
   return (
     <View style={styles.container}>
       <View style={styles.headerItemContainer}>
-        <Entypo name="menu" size={32} color="black" />
+        <TouchableOpacity
+          onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+        >
+          <FontAwesome6 name="bars" size={24} color="black" />
+        </TouchableOpacity>
+
         <Image
-          style={{ width: 111.78, height: 31 }}
+          style={styles.logo}
           source={require("../../assets/images/headerLogo.png")}
         />
-        <TouchableOpacity
-          onPress={() => {
-            router.push("/(tabs)/account");
-          }}
-          style={styles.userCartContainer}
-        >
-          <Image
-            style={{ width: 40, height: 40 }}
-            source={require("../../assets/images/userImg.png")}
-          />
+
+        <View style={styles.userCartContainer}>
           <TouchableOpacity
-            onPress={() => {
-              router.push("/Cart");
-            }}
+            onPress={() => navigation.navigate("(tabs)/account")}
+          >
+            <Image
+              style={styles.userImage}
+              source={require("../../assets/images/userImg.png")}
+            />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Cart")}
             style={styles.cartContainer}
           >
-            <FontAwesome6 name="cart-shopping" size={28} color="black" />
-            <Text style={styles.cartLength}>{cartItems.length}</Text>
+            <FontAwesome6 name="cart-shopping" size={24} color="black" />
+            {cartItems.length > 0 && (
+              <View style={styles.cartBadge}>
+                <Text style={styles.cartBadgeText}>{cartItems.length}</Text>
+              </View>
+            )}
           </TouchableOpacity>
-        </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -42,27 +52,52 @@ export default function Header() {
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
+    backgroundColor: "#f9f9f9",
+    paddingVertical: 10,
+    elevation: 2, // for Android shadow
+    shadowColor: "#000", // for iOS shadow
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
   },
   headerItemContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     marginHorizontal: 16,
-    paddingVertical: 10,
-    backgroundColor: "",
+  },
+  logo: {
+    width: 111.78,
+    height: 31,
+    resizeMode: "contain",
   },
   userCartContainer: {
     flexDirection: "row",
-    gap: 10,
     alignItems: "center",
+    gap: 10,
+  },
+  userImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 20, // make it circular
   },
   cartContainer: {
     position: "relative",
   },
-  cartLength: {
+  cartBadge: {
     position: "absolute",
-    left: "50%",
-    top: -14,
+    top: -8,
+    right: -8,
+    backgroundColor: "red",
+    borderRadius: 10,
+    width: 20,
+    height: 20,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  cartBadgeText: {
+    color: "white",
+    fontSize: 12,
+    fontWeight: "bold",
   },
 });

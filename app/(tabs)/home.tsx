@@ -8,65 +8,71 @@ import ImageSlider from "@/components/specific/ImageSlider";
 import SpecialOffer from "@/components/specific/SpecialOffer";
 import SummerSale from "@/components/specific/SummerSale";
 import TimeBanner from "@/components/specific/TimeBanner";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import {
   Image,
   RefreshControl,
+  Animated as RNAnimated,
   SafeAreaView,
-  ScrollView,
   StyleSheet,
-  BackHandler,
-  ToastAndroid,
 } from "react-native";
 
-const home = () => {
+const Home = () => {
+  const scrollY = useRef(new RNAnimated.Value(0)).current;
+  const [refreshing, setRefreshing] = useState(false);
+  const [headerVisible, setHeaderVisible] = useState(true);
 
-  const [refreshing, setRefreshing] = React.useState(false);
+  const scrollPosition = useRef(0);
 
-  const onRefresh = React.useCallback(() => {
+  // Refresh callback
+  const onRefresh = useCallback(() => {
     setRefreshing(true);
     setTimeout(() => {
       setRefreshing(false);
     }, 2000);
   }, []);
 
-  const [backPressedOnce, setBackPressedOnce] = useState(false);
+  // Detect scroll direction
+  const handleScroll = (event) => {
+    const currentScrollY = event.nativeEvent.contentOffset.y;
 
-  useEffect(() => {
-    const backAction = () => {
-      if (!backPressedOnce) {
-        ToastAndroid.show("Are you sure you want to exit?", ToastAndroid.SHORT);
-        
-        setBackPressedOnce(true);
+    if (currentScrollY > scrollPosition.current && currentScrollY > 50) {
+      setHeaderVisible(false);
+    } else if (currentScrollY < scrollPosition.current) {
+      setHeaderVisible(true);
+    }
 
-        setTimeout(() => setBackPressedOnce(false), 2000);
+    scrollPosition.current = currentScrollY;
+  };
 
-        return true;
-      } else {
-        BackHandler.exitApp();
-        return false;
-      }
-    };
-
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction
-    );
-
-    return () => backHandler.remove();
-  }, [backPressedOnce]);
-
-
-  
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView
+      <RNAnimated.View
+        style={[
+          styles.fixedHeader,
+          {
+            transform: [
+              {
+                translateY: headerVisible ? 0 : -100,
+              },
+            ],
+          },
+        ]}
+      >
+        <Header />
+      </RNAnimated.View>
+
+      <RNAnimated.ScrollView
+        onScroll={(event) => {
+          handleScroll(event);
+        }}
+        scrollEventThrottle={16}
         showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollViewContent}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        <Header />
         <SearchBar />
         <CircleSlider />
         <HomeBanner />
@@ -95,7 +101,7 @@ const home = () => {
           style={[styles.img, { resizeMode: "stretch", borderRadius: 10 }]}
           source={require("../../assets/images/BrownShoes.png")}
         />
-      </ScrollView>
+      </RNAnimated.ScrollView>
     </SafeAreaView>
   );
 };
@@ -104,7 +110,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#f9f9f9",
-    // paddingHorizontal:4,
+  },
+  fixedHeader: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 1000,
+    backgroundColor: "#f9f9f9",
+    elevation: 2,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+  },
+  scrollViewContent: {
+    paddingTop: 60,
   },
   img: {
     marginTop: 16,
@@ -113,4 +134,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default home;
+export default Home;
