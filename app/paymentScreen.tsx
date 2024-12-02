@@ -19,7 +19,7 @@ const PaymentScreen = () => {
   return (
     <View style={styles.container}>
       <Modal
-        animationType="slide"
+        animationType="fade"
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
@@ -45,7 +45,7 @@ const PaymentScreen = () => {
       <View style={styles.orderDetailContainer}>
         <View style={styles.orderDetailText}>
           <Text style={[styles.fadeText, styles.text]}>Order</Text>
-          <Text style={[styles.fadeText, styles.text]}>7000</Text>
+          <Text style={[styles.fadeText, styles.text]}>{}</Text>
         </View>
         <View style={styles.orderDetailText}>
           <Text style={[styles.fadeText, styles.text]}>Shipping</Text>
