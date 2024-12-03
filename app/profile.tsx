@@ -1,31 +1,22 @@
-
+import Button from "@/components/common/Button";
+import HorizontalLine from "@/components/common/HorizontalLine";
+import { setUser } from "@/store/slices/authSlice";
+import { Picker } from "@react-native-picker/picker";
+import axios from "axios";
+import { router } from "expo-router";
+import { Formik } from "formik";
 import {
-  Image,
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   ToastAndroid,
-  View,
+  TouchableOpacity,
 } from "react-native";
-import { TextInput, TouchableOpacity } from "react-native";
-import { Picker } from "@react-native-picker/picker";
 import { useDispatch, useSelector } from "react-redux";
-import { Formik } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
-import * as ImagePicker from 'expo-image-picker';
-import Button from "@/components/common/Button";
-import HorizontalLine from "@/components/common/HorizontalLine";
-import { setUser, updateProfileImage } from "@/store/slices/authSlice";
-import { router } from "expo-router";
-import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
-import { useState } from "react";
 
 const profile = () => {
-  const { image: profileImage } = useSelector((state) => state.auth);
-
-  const [image, setImage] = useState(profileImage || "@/assets/images/userImg.png");
-
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.token);
 
@@ -36,12 +27,13 @@ const profile = () => {
   const personalDetailsSchema = Yup.object().shape({
     firstName: Yup.string().required("First name is required"),
     lastName: Yup.string().required("Last name is required"),
-    email: Yup.string().email("Invalid email").required("Email is required"),
+    email: Yup.string()
+      .email("Invalid email")
+      .required("Email is required"),
   });
 
   const addressSchema = Yup.object().shape({
-    pincode: Yup.string()
-      .required("Pincode is required"),
+    pincode: Yup.string().required("Pincode is required"),
     address: Yup.string().required("Address is required"),
     city: Yup.string().required("City is required"),
     selectedState: Yup.string().required("State is required"),
@@ -51,7 +43,6 @@ const profile = () => {
   const handleUpdate = async (values) => {
     console.log("Updated Personal Details:", values);
     showToast("Personal Details Updated");
-
     try {
       const response = await axios.post(
         "https://stylish-backend-exfz.onrender.com/api/v1/auth/editUser",
@@ -60,11 +51,10 @@ const profile = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      console.log('response.data.user:',response.data);
+      console.log("response.data.user:", response.data);
       router.replace("/account2");
-      
-      dispatch(setUser(response.data));
 
+      dispatch(setUser(response.data));
     } catch (error) {
       if (error.response) {
         console.error("API error:", error.response.data);
@@ -90,34 +80,8 @@ const profile = () => {
     }
   };
 
- 
-    
-    const handleEditProfilePicture = async () => {
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        aspect: [4, 3],
-        quality: 1,
-      });
-  
-      if (!result.canceled) {
-        const selectedImage = result.assets[0].uri;
-        setImage(selectedImage);
-        dispatch(updateProfileImage(selectedImage)); 
-      }
-    };
-
-
   return (
     <ScrollView style={styles.container}>
-      <View style={styles.imgDiv}>
-      { <Image source={{ uri: image || require('@/assets/images/userImg.png' )}} style={{height:200,width:200,borderRadius:100 }} />}
-        <TouchableOpacity onPress={handleEditProfilePicture}>
-        <FontAwesome6 name="edit" size={24} color="skyblue" />
-
-        </TouchableOpacity>
-      </View>
-
       <Text style={{ fontSize: 18, marginTop: 28 }}>Personal Details:</Text>
       <Formik
         initialValues={{ firstName: "", lastName: "", email: "" }}
@@ -156,7 +120,7 @@ const profile = () => {
               <Text style={styles.error}>{errors.email}</Text>
             )}
 
-            <TouchableOpacity style={{marginTop:20}}>
+            <TouchableOpacity style={{ marginTop: 20 }}>
               <Button onPress={handleSubmit} title="Update" />
             </TouchableOpacity>
           </>
@@ -165,7 +129,9 @@ const profile = () => {
 
       <HorizontalLine />
 
-      <Text style={{ fontSize: 18, marginTop: 28 }}>Business Address Details:</Text>
+      <Text style={{ fontSize: 18, marginTop: 28 }}>
+        Business Address Details:
+      </Text>
       <Formik
         initialValues={{
           pincode: "",
@@ -228,13 +194,13 @@ const profile = () => {
               placeholder="Country"
               onChangeText={handleChange("country")}
               value={values.country}
-              style={[styles.inputBox, {marginBottom:20}]}
+              style={[styles.inputBox, { marginBottom: 20 }]}
             />
             {touched.country && errors.country && (
-              <Text style={[styles.error,]}>{errors.country}</Text>
+              <Text style={[styles.error]}>{errors.country}</Text>
             )}
 
-            <Button  onPress={handleSubmit} title="Save Address" />
+            <Button onPress={handleSubmit} title="Save Address" />
           </>
         )}
       </Formik>
@@ -275,4 +241,3 @@ const styles = StyleSheet.create({
 });
 
 export default profile;
-

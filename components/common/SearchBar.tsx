@@ -1,33 +1,32 @@
 import Feather from "@expo/vector-icons/Feather";
 import { useRouter } from "expo-router";
-import React, { useState } from "react";
-import { StyleSheet, TextInput, View } from "react-native";
+import React from "react";
+import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 
 export default function SearchBar() {
-  const [searchItem, setSearchItem] = useState("");
   const router = useRouter();
-  const handleSearch = () => {
-    setSearchItem("");
-    console.log("-jj", searchItem);
-    if (searchItem.trim()) {
-      router.push(`/searchPage?search=${encodeURIComponent(searchItem.trim())}`);
-    }
+  const navigateToSearchPage = () => {
+    router.push("/searchPage");
   };
+
   return (
     <View style={styles.searchContainer}>
-      <View style={styles.searchBar}>
+      <TouchableOpacity
+        style={styles.searchBar}
+        onPress={navigateToSearchPage}
+        activeOpacity={0.7}
+      >
         <View style={styles.inputContainer}>
           <Feather name="search" size={24} color="grey" />
           <TextInput
-            value={searchItem}
-            onChangeText={setSearchItem}
-            onSubmitEditing={handleSearch}
             style={styles.inputText}
             placeholder="Search any Product"
-          ></TextInput>
+            editable={false}
+            pointerEvents="none"
+          />
         </View>
         <Feather name="mic" size={24} color="grey" />
-      </View>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -53,5 +52,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 10,
   },
-  inputText: {},
+  inputText: {
+    flex: 1,
+  },
 });

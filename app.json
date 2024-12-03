@@ -20,7 +20,7 @@
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/onBoardSplash.png"
     },
     "plugins": [
       "expo-router",
@@ -29,9 +29,7 @@
         {
           "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
-      ]
-      ,
-    
+      ],
       [
         "expo-splash-screen",
         {

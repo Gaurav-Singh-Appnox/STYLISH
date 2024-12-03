@@ -3,22 +3,21 @@ import { Tabs } from "expo-router";
 
 export default function TabLayout() {
   return (
-    
     <Tabs>
       <Tabs.Screen
         name="home"
         options={{
           title: "Home",
-          headerShown:false,
+          headerShown: false,
           tabBarIcon: ({ color, size }) => (
             <FontAwesome name="home" color={color} size={size} />
-          )
+          ),
         }}
       />
       <Tabs.Screen
         name="wishlist"
         options={{
-          headerShown:true,
+          headerShown: true,
           title: "Wishlist",
           tabBarIcon: ({ color, size }) => (
             <FontAwesome name="heart" color={color} size={size} />
@@ -28,7 +27,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="shop"
         options={{
-          headerShown:false,
+          headerShown: false,
 
           title: "Shop",
           tabBarIcon: ({ color, size }) => (
@@ -36,22 +35,22 @@ export default function TabLayout() {
           ),
         }}
       />
-      {/* <Tabs.Screen
-        name="search"
-        options={{
-          title: "Search",
-          tabBarIcon: ({ color, size }) => (
-            <FontAwesome name="search" color={color} size={size} />
-          ),
-        }}
-      /> */}
       <Tabs.Screen
         name="account2"
         options={{
-          title: "Settings",
-          headerShown:false,
+          title: "Search",
           tabBarIcon: ({ color, size }) => (
             <FontAwesome name="user" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="account"
+        options={{
+          title: "Setting",
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome name="gear" color={color} size={size} />
           ),
         }}
       />

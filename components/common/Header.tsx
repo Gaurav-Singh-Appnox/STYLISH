@@ -24,9 +24,7 @@ export default function Header() {
         />
 
         <View style={styles.userCartContainer}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("(tabs)/account")}
-          >
+          <TouchableOpacity onPress={() => navigation.navigate("account2")}>
             <Image
               style={styles.userImage}
               source={require("../../assets/images/userImg.png")}
@@ -79,7 +77,7 @@ const styles = StyleSheet.create({
   userImage: {
     width: 40,
     height: 40,
-    borderRadius: 20, // make it circular
+    borderRadius: 20,
   },
   cartContainer: {
     position: "relative",

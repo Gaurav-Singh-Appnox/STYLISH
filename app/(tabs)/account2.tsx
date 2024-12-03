@@ -1,20 +1,12 @@
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  Image,
-  View,
-  Touchable,
-  TouchableOpacity,
-} from "react-native";
-import React, { useState } from "react";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
-import AntDesign from "@expo/vector-icons/AntDesign";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import Entypo from "@expo/vector-icons/Entypo";
-import { useDispatch, useSelector } from "react-redux";
-import { router } from "expo-router";
 import { logOut } from "@/store/slices/authSlice";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import Entypo from "@expo/vector-icons/Entypo";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { router } from "expo-router";
+import React, { useState } from "react";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function account2() {
   const dispatch = useDispatch();
@@ -37,13 +29,10 @@ export default function account2() {
     <View style={styles.container}>
       <View style={styles.topContainer}>
         <Image
-          source={{uri:image}}
+          source={{ uri: image }}
           style={{ height: 100, width: 100, borderRadius: 100 }}
         />
-        <Text style={styles.name}>
-          Mr.
-          {name == null ? "USER" : name}
-        </Text>
+        <Text style={styles.name}>{name == null ? "USER" : name}</Text>
         <Text style={styles.email}>{userData.email}</Text>
       </View>
       <View style={{ marginTop: 8 }}>
@@ -118,7 +107,7 @@ const styles = StyleSheet.create({
   },
   name: {
     paddingTop: 8,
-    fontSize: 36,
+    fontSize: 28,
   },
   email: {
     color: "grey",
